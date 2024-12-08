@@ -1,14 +1,21 @@
-const express= require('express');
-const dotenv= require('dotenv');
-dotenv.config();
-const cors= require('cors');
-const dbconnect= require('./DB/DB')
-
-dbconnect();
-
-const app= express();
-
-app.use(cors)
+const express= require('express'); // express
+const dotenv= require('dotenv'); // for using .env as  source file
+dotenv.config(); // cofiguring it
+const cors= require('cors'); // cors
+const dbconnect= require('./DB/DB') // exporting the function to connect the db to this code
+const userRoutes= require('./Routes/userroutes')
 
 
-module.exports= app;
+
+dbconnect(); // calling the function so the db automatically connects always
+
+const app= express(); // initializin express
+
+app.use(cors()) // currently it will recieve request from any website
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+
+
+app.use('/users',userRoutes)
+
+module.exports= app; // exporting this express server
