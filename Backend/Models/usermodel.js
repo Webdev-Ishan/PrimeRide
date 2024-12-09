@@ -38,8 +38,8 @@ fullname:{
 })
 
 // function for generating authentication token using jwt.sign
-userSchema.methods.generateAuthtoken= ()=>{
-    const token= jwt.sign({id:this._id}, process.env.JWT_key); // from .env
+userSchema.methods.generateAuthtoken = function() {
+    const token = jwt.sign({ id: this._id }, process.env.JWT_key); // from .env
     return token;
 }
 

@@ -9,7 +9,7 @@ module.exports.registerUser = async (req, res, next) => {
         return res.status(400).json({ errors: error.array() }); // Return 400 for validation errors
     }
 
-    console.log('Request Body:', req.body);
+   // console.log('Request Body:', req.body);
 
     const { fullname, email, password } = req.body;
 
