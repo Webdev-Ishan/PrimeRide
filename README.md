@@ -1,141 +1,190 @@
-# PrimeRide
-This is a Taxi/Cab app using the MERN stack (Mongodb, Reactjs, ExpressJS, Nodejs) and with modern and sleek UI along with the flawless Backend and  Interactive frontend collaboration
+# User Registration Module
 
+This project implements a **User Registration Module** using **Node.js**, **Express.js**, **Mongoose**, and **JSON Web Tokens (JWT)** for authentication and authorization. It includes hashing of passwords for secure storage, validation of user input, and efficient error handling.
 
+---
 
-# PrimeRide
+## Features
 
-PrimeRide is a modern Taxi/Cab application built using the MERN stack (MongoDB, Express.js, React.js, Node.js). It features a sleek user interface and a robust backend, ensuring seamless interaction between the frontend and backend.
+1. **User Model**:
+   - Stores user details: `fullname` (split into `firstname` and `lastname`), `email`, `password`, and `socketID`.
+   - Passwords are securely hashed using `bcrypt`.
+   - Provides methods for:
+     - Generating authentication tokens (`generateAuthtoken`).
+     - Comparing user-provided passwords (`comparepassword`).
+     - Hashing passwords before storage (`hashpassword`).
 
-## User Management API Documentation
+2. **User Registration**:
+   - Handles user registration with validation for required fields (`firstname`, `email`, `password`).
+   - Automatically hashes passwords before saving.
+   - Generates an authentication token upon successful registration.
 
-### Overview
+3. **Routes**:
+   - `/register`: Registers a new user with proper validation and returns an authentication token.
 
-This API is designed for managing user registration, validation, password security through hashing, and token-based authentication. It is built using Node.js, Express.js, and MongoDB with Mongoose as the ORM.
+4. **Validation**:
+   - Ensures the validity of:
+     - Email format.
+     - Minimum length for `firstname`, `lastname`, and `password`.
 
-### Base URL
-<your_base_url>/api/v1
+---
 
-Insert Code
-Copy code
+## Folder Structure
 
-### Endpoints
+```plaintext
+.
+├── Models
+│   └── usermodel.js      # Defines the user schema and associated methods
+├── Services
+│   └── userService.js    # Provides user creation logic
+├── Controllers
+│   └── usercontroller.js # Handles user registration logic
+├── Routes
+│   └── userroute.js      # Defines user-related routes
+└── app.js                # Main application entry point
+```
 
-#### 1. Register a User
+---
 
-- **Method:** `POST`
-- **Endpoint:** `/register`
+## API Documentation
 
-This endpoint allows a new user to register by providing their first name, email, and password. Upon successful registration, the API returns a JSON Web Token (JWT) for authentication purposes.
+### Endpoint: `POST /register`
 
-##### Request Parameters
+#### Description
+Registers a new user by validating the provided data, hashing the password, and generating an authentication token.
 
-**Headers:**
-- `Content-Type: application/json` (Required to send data in JSON format)
-
-**Body (JSON):**
+#### Request Body
 ```json
 {
-    "fullname": {
-        "firstname": "String (required, min. 3 characters)",
-        "lastname": "String (optional, min. 3 characters)"
-    },
-    "email": "String (required, valid email format, min. 5 characters)",
-    "password": "String (required, secure password, min. 6 characters)"
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "securepassword"
 }
-Validation Rules
-| Field | Validation | Error Message | |------------------------|----------------------------------------------|---------------------------------------------| | fullname.firstname | Must be at least 3 characters long. | "Firstname should be at least 3 characters long." | | email | Must be a valid email format. | "Invalid Email." | | password | Must be at least 6 characters long. | "Password must be at least 6 characters long." |
+```
 
-Response
-Success (201 Created):
+#### Validations
+- `email` must be in valid email format.
+- `fullname.firstname` must be at least 3 characters long.
+- `password` must be at least 6 characters long.
 
-json
-Insert Code
-Copy code
-{
-    "token": "<JWT_TOKEN>",
+#### Response
+- **Success**: Returns a JSON object with the authentication token and user details (excluding the password).
+  ```json
+  {
+    "token": "jwt-token",
     "user": {
-        "_id": "<USER_ID>",
-        "fullname": {
-            "firstname": "John",
-            "lastname": "Doe"
-        },
-        "email": "johndoe@example.com"
-    }
-}
-Error Responses:
-
-Validation Error (400 Bad Request):
-json
-Insert Code
-Copy code
-{
-    "errors": [
-        {
-            "msg": "Firstname should be at least 3 characters long",
-            "param": "fullname.firstname",
-            "location": "body"
-        },
-        {
-            "msg": "Invalid Email",
-            "param": "email",
-            "location": "body"
-        }
-    ]
-}
-Server Error (500 Internal Server Error):
-json
-Insert Code
-Copy code
-{
-    "error": "Internal Server Error"
-}
-Schema Definitions
-User Schema
-| Field | Type | Required | Description | |------------------------|---------|----------|-----------------------------------------------| | fullname.firstname | String | Yes | First name of the user (min. 3 characters). | | fullname.lastname | String | No | Last name of the user (min. 3 characters). | | email | String | Yes | Unique email address of the user. | | password | String | Yes | Secure password (stored as a hashed value). | | socketID | String | No | Used for real-time communication (Socket.IO).|
-
-Business Logic
-Password Hashing: Passwords are hashed before being stored in the database using the bcrypt library to ensure security.
-
-javascript
-Insert Code
-Copy code
-userSchema.statics.hashpassword = async function(password) {
-    return await bcrypt.hash(password, 10);
-}
-Token Generation: Upon successful registration, a JWT token is generated for authentication.
-
-javascript
-Insert Code
-Copy code
-userSchema.methods.generateAuthtoken = function() {
-    return jwt.sign({ id: this._id }, process.env.JWT_KEY);
-}
-Error Handling
-Validation Errors: Uses express-validator to validate request parameters and return structured error messages.
-Server Errors: Any unexpected errors are logged, and a generic 500 Internal Server Error response is returned.
-Usage Example
-Request:
-
-http
-Insert Code
-Copy code
-POST /register
-Content-Type: application/json
-
-{
-    "fullname": {
+      "_id": "64d76a13b2e4123abcde5678",
+      "fullname": {
         "firstname": "John",
         "lastname": "Doe"
-    },
-    "email": "johndoe@example.com",
-    "password": "securepassword123"
-}
-Response:
+      },
+      "email": "john.doe@example.com"
+    }
+  }
+  ```
+- **Error**:
+  - Validation errors return a `400` status with detailed error messages.
+  - Server errors return a `500` status with an appropriate error message.
 
-Success (201 Created):
-json
-Insert Code
-Copy code
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+---
+
+## Usage
+
+### Prerequisites
+- **Node.js** installed.
+- MongoDB instance running locally or remotely.
+- `.env` file with the following variables:
+  ```env
+  JWT_KEY=your-secret-key
+  MONGO_URI=your-mongodb-uri
+  ```
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the application:
+   ```bash
+   npm start
+   ```
+
+### Testing the API
+Use tools like **Postman** or **cURL** to test the `/register` endpoint:
+```bash
+curl -X POST http://localhost:3000/register \
+-H "Content-Type: application/json" \
+-d '{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "securepassword"
+}'
+```
+
+---
+
+## Technologies Used
+
+- **Node.js**: JavaScript runtime for building the server-side application.
+- **Express.js**: Web framework for routing and middleware management.
+- **Mongoose**: MongoDB object modeling tool for schema and data management.
+- **bcrypt**: Password hashing library.
+- **jsonwebtoken (JWT)**: For secure token-based authentication.
+- **express-validator**: Middleware for input validation and sanitization.
+
+---
+
+## Notes
+
+1. Ensure a secure and unique `JWT_KEY` is used in production.
+2. Passwords are stored as hashes for security. Never store raw passwords.
+3. Modify the `MONGO_URI` in the `.env` file to point to your MongoDB database.
+
+---
+
+## Future Enhancements
+
+- Add login functionality.
+- Implement user roles (e.g., admin, user).
+- Add email verification on registration.
+- Rate limiting to prevent abuse of the `/register` endpoint.
+
+---
+
+## Contributing
+
+1. Fork the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit changes:
+   ```bash
+   git commit -m "Description of changes"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a pull request.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Feel free to contribute or report issues to improve this project! 😊
