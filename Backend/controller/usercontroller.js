@@ -40,3 +40,52 @@ module.exports.registerUser = async (req, res, next) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+
+
+
+module.exports.loginuser = async(req, res , next) =>{
+    const error = validationResult(req);
+
+    if (!error.isEmpty()) {
+        return res.status(400).json({ errors: error.array() }); // Return 400 for validation errors
+    }
+
+   // console.log('Request Body:', req.body);
+
+    const { email, password } = req.body;
+
+
+try {
+
+
+    const user= await userModel.findOne({email:email}). select('+password');
+
+    if(!user){
+        res.status(401).json({ error: 'Either email or password is incorrect' });
+    }
+    
+    const ismatch= await user.comparepassword(password);
+
+
+    
+    if(!ismatch){
+        res.status(401).json({ error: 'Either email or password is incorrect' });
+    }
+
+
+  // Generate auth token (ensure method exists)
+  const token = user.generateAuthtoken();
+
+  // Send response
+  res.status(201).json({ token, user });
+
+
+
+} catch (error) {
+     console.error('Error during user registration:', error.message);
+        res.status(500).json({ error: 'Either email or password is incorrect' });
+}
+
+
+}

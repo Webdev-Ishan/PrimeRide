@@ -1,31 +1,27 @@
-# User Registration Module
+# User Authentication Module
 
-This project implements a **User Registration Module** using **Node.js**, **Express.js**, **Mongoose**, and **JSON Web Tokens (JWT)** for authentication and authorization. It includes hashing of passwords for secure storage, validation of user input, and efficient error handling.
+This project is an implementation of a **User Authentication Module** using **Node.js**, **Express.js**, **Mongoose**, and **JSON Web Tokens (JWT)**. It includes features for user registration, secure password storage, and login functionality with token-based authentication.
 
 ---
 
 ## Features
 
-1. **User Model**:
-   - Stores user details: `fullname` (split into `firstname` and `lastname`), `email`, `password`, and `socketID`.
-   - Passwords are securely hashed using `bcrypt`.
-   - Provides methods for:
-     - Generating authentication tokens (`generateAuthtoken`).
-     - Comparing user-provided passwords (`comparepassword`).
-     - Hashing passwords before storage (`hashpassword`).
-
-2. **User Registration**:
-   - Handles user registration with validation for required fields (`firstname`, `email`, `password`).
-   - Automatically hashes passwords before saving.
+1. **User Registration**:
+   - Validates user input for required fields.
+   - Hashes passwords before saving to the database for security.
    - Generates an authentication token upon successful registration.
 
-3. **Routes**:
-   - `/register`: Registers a new user with proper validation and returns an authentication token.
+2. **User Login**:
+   - Validates login credentials.
+   - Compares the hashed password with the user-provided password.
+   - Generates an authentication token upon successful login.
 
-4. **Validation**:
-   - Ensures the validity of:
-     - Email format.
-     - Minimum length for `firstname`, `lastname`, and `password`.
+3. **Input Validation**:
+   - Ensures valid email format.
+   - Validates minimum length requirements for `firstname` and `password`.
+
+4. **Error Handling**:
+   - Returns detailed error messages for invalid input or failed authentication.
 
 ---
 
@@ -34,13 +30,13 @@ This project implements a **User Registration Module** using **Node.js**, **Expr
 ```plaintext
 .
 ├── Models
-│   └── usermodel.js      # Defines the user schema and associated methods
+│   └── usermodel.js      # User schema and methods
 ├── Services
-│   └── userService.js    # Provides user creation logic
+│   └── userService.js    # Handles user creation logic
 ├── Controllers
-│   └── usercontroller.js # Handles user registration logic
+│   └── usercontroller.js # Manages user registration and login functionality
 ├── Routes
-│   └── userroute.js      # Defines user-related routes
+│   └── userroute.js      # Defines routes for user-related operations
 └── app.js                # Main application entry point
 ```
 
@@ -48,10 +44,10 @@ This project implements a **User Registration Module** using **Node.js**, **Expr
 
 ## API Documentation
 
-### Endpoint: `POST /register`
+### 1. Endpoint: `POST /register`
 
 #### Description
-Registers a new user by validating the provided data, hashing the password, and generating an authentication token.
+Registers a new user with the provided details and returns an authentication token upon success.
 
 #### Request Body
 ```json
@@ -66,7 +62,7 @@ Registers a new user by validating the provided data, hashing the password, and 
 ```
 
 #### Validations
-- `email` must be in valid email format.
+- `email` must be a valid email address.
 - `fullname.firstname` must be at least 3 characters long.
 - `password` must be at least 6 characters long.
 
@@ -86,8 +82,95 @@ Registers a new user by validating the provided data, hashing the password, and 
   }
   ```
 - **Error**:
-  - Validation errors return a `400` status with detailed error messages.
-  - Server errors return a `500` status with an appropriate error message.
+  - Validation errors return a `400` status with details.
+  - Server errors return a `500` status.
+
+---
+
+### 2. Endpoint: `POST /login`
+
+#### Description
+Authenticates a user by verifying their email and password, then returns an authentication token.
+
+#### Request Body
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "securepassword"
+}
+```
+
+#### Validations
+- `email` must be a valid email address.
+- `password` must be at least 6 characters long.
+
+#### Response
+- **Success**: Returns a JSON object with the authentication token and user details.
+  ```json
+  {
+    "token": "jwt-token",
+    "user": {
+      "_id": "64d76a13b2e4123abcde5678",
+      "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+      },
+      "email": "john.doe@example.com"
+    }
+  }
+  ```
+- **Error**:
+  - Invalid credentials return a `401` status.
+  - Server errors return a `500` status.
+
+---
+
+## Implementation Details
+
+### User Model (`usermodel.js`)
+- Defines the schema for user data, including:
+  - `fullname`: Object with `firstname` and `lastname`.
+  - `email`: Unique and required.
+  - `password`: Stored as a hashed string for security.
+- Provides methods for:
+  - **Password hashing** (`hashpassword`).
+  - **Password comparison** (`comparepassword`).
+  - **Token generation** (`generateAuthtoken`).
+
+---
+
+### Controller (`usercontroller.js`)
+
+#### Register User
+- Validates input data using `express-validator`.
+- Hashes the password using `bcrypt`.
+- Creates the user and generates a JWT token.
+- Returns the token and user details in the response.
+
+#### Login User
+- Validates input data.
+- Verifies the email and password.
+- Generates a JWT token if credentials are valid.
+- Returns the token and user details.
+
+---
+
+### Routes (`userroute.js`)
+
+#### `/register`
+- **Method**: `POST`
+- **Validation Middleware**:
+  - `email`: Must be valid.
+  - `fullname.firstname`: Must be at least 3 characters long.
+  - `password`: Must be at least 6 characters long.
+- **Handler**: `registerUser`
+
+#### `/login`
+- **Method**: `POST`
+- **Validation Middleware**:
+  - `email`: Must be valid.
+  - `password`: Must be at least 6 characters long.
+- **Handler**: `loginUser`
 
 ---
 
@@ -96,7 +179,7 @@ Registers a new user by validating the provided data, hashing the password, and 
 ### Prerequisites
 - **Node.js** installed.
 - MongoDB instance running locally or remotely.
-- `.env` file with the following variables:
+- `.env` file with:
   ```env
   JWT_KEY=your-secret-key
   MONGO_URI=your-mongodb-uri
@@ -112,79 +195,46 @@ Registers a new user by validating the provided data, hashing the password, and 
    ```bash
    npm install
    ```
-3. Run the application:
+3. Start the application:
    ```bash
    npm start
    ```
 
 ### Testing the API
-Use tools like **Postman** or **cURL** to test the `/register` endpoint:
-```bash
-curl -X POST http://localhost:3000/register \
--H "Content-Type: application/json" \
--d '{
-  "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
-  },
-  "email": "john.doe@example.com",
-  "password": "securepassword"
-}'
-```
+Use **Postman** or **cURL** for testing the endpoints.
 
 ---
 
 ## Technologies Used
 
-- **Node.js**: JavaScript runtime for building the server-side application.
-- **Express.js**: Web framework for routing and middleware management.
-- **Mongoose**: MongoDB object modeling tool for schema and data management.
-- **bcrypt**: Password hashing library.
-- **jsonwebtoken (JWT)**: For secure token-based authentication.
-- **express-validator**: Middleware for input validation and sanitization.
+- **Node.js**: Server-side runtime.
+- **Express.js**: Web framework for routing and middleware.
+- **Mongoose**: MongoDB object modeling.
+- **bcrypt**: Secure password hashing.
+- **jsonwebtoken (JWT)**: Token-based authentication.
+- **express-validator**: Input validation middleware.
 
 ---
 
 ## Notes
 
-1. Ensure a secure and unique `JWT_KEY` is used in production.
-2. Passwords are stored as hashes for security. Never store raw passwords.
-3. Modify the `MONGO_URI` in the `.env` file to point to your MongoDB database.
+1. Use a strong and unique `JWT_KEY` in production.
+2. Always use HTTPS for secure communication.
+3. Extend the functionality with user roles and email verification.
 
 ---
 
 ## Future Enhancements
 
-- Add login functionality.
-- Implement user roles (e.g., admin, user).
-- Add email verification on registration.
-- Rate limiting to prevent abuse of the `/register` endpoint.
-
----
-
-## Contributing
-
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit changes:
-   ```bash
-   git commit -m "Description of changes"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Open a pull request.
+- Add user profile management.
+- Implement logout with token invalidation.
+- Integrate email verification on registration.
+- Rate limit requests for login and register endpoints.
 
 ---
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE). 
 
----
-
-Feel free to contribute or report issues to improve this project! 😊
+Feel free to contribute or report issues! 😊
