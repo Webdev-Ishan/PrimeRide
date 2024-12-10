@@ -89,3 +89,14 @@ try {
 
 
 }
+
+
+module.exports.getuserprofile= async (req, res, next)=>{
+
+// but we want to ensure that the data of profile will only visible to the person who is
+// currently logged in and not to someone else so we will set up a middle ware in the
+// middleware folders
+res.status(200).json(req.user);
+
+
+}
