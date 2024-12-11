@@ -35,11 +35,11 @@ fullname:{
     }
 
 
-})
+});
 
 // function for generating authentication token using jwt.sign
 userSchema.methods.generateAuthtoken = function() {
-    const token = jwt.sign({ id: this._id }, process.env.JWT_key); // from .env
+    const token = jwt.sign({ _id: this._id }, process.env.JWT_key,{expiresIn:'24h'}); // from .env
     return token;
 }
 

@@ -1,34 +1,49 @@
-const userModel= require('../Models/usermodel')
-const bcrypt = require('bcrypt') 
-const jwt = require('jsonwebtoken') 
-const mongoose = require('mongoose')
+const userModel = require('../Models/usermodel');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
-module.exports.authuser= async(req, res, next)=>{
-    const token = req.cookies.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
-console.log(token);
-if(!token){
+module.exports.authuser = async (req, res, next) => {
+    // Extract the token from cookies or authorization header
+    const token = req.cookies.token || (req.headers.authorization?.split(' ')[1]);
+    console.log("Token:", token);
 
-    return res.status(401).json({message:"Unauthorised"});
-}
+    // Check if token exists
+    if (!token) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
 
-try { 
-    
-    const decode = jwt.verify(token, process.env.JWT_key);
-    console.log("Decoded Token:", decode);
+    const isblacklisted= await userModel.findOne({token:token});
+    if(isblacklisted){
+        return res.status(400).json({message:'Unauthorised'})
+    }
 
-const user = await userModel.findById(objectId(decode._id));
-console.log("User  Found:", user);
+    try {
+        // Verify the token
+        const decode = jwt.verify(token, process.env.JWT_key);
+        console.log("Decoded Token:", decode);
 
-req.user= user;
+        // Validate the ObjectId
+        if (!mongoose.Types.ObjectId.isValid(decode._id)) {
+            return res.status(400).json({ message: "Invalid User ID" });
+        }
 
-return next();
+        // Query the database to find the user
+        const user = await userModel.findById(decode._id);
+        console.log("User Found:", user);
 
-} catch (error) {
-    
-    return res.status(401).json({message:"Unauthorised"});
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
+        // Attach the user to the request object
+        req.user = user;
 
-}
-
-
-}
+        // Proceed to the next middleware
+        return next();
+    } catch (error) {
+        console.error("Error during authentication:", error.message);
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+};
