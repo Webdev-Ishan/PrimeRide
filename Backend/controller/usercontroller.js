@@ -82,6 +82,7 @@ try {
 
   // Generate auth token (ensure method exists)
   const token = user.generateAuthtoken();
+  
   res.cookies('token', token);
 
   // Send response
