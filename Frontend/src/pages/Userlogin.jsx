@@ -2,24 +2,28 @@ import React from 'react';
 import background from '../assets/loginbackground.jpg'
 import {Link} from 'react-router-dom'
 import { useState } from 'react';
+import {useDispatch} from 'react-redux'
+import {setemail, setpassword} from '../Features/userSlice'
 
 const Userlogin = () => {
-
-  const [email, setemail]= useState('');
-  const [password, setpassword]= useState('');
+const dispatch= useDispatch()
+  const [email, setEmailState]= useState('');
+  const [password, setPasswordState]= useState('');
   const [userdata, setuserdata]= useState({})
 
   const submithandeler=(e)=>{
 e.preventDefault();
 
+dispatch(setemail(email));
+dispatch(setpassword(password));
+ 
 setuserdata({
   email:email,
   password:password
 })
 
-console.log(userdata)
-setemail('')
-setpassword('')
+setEmailState('')
+setPasswordState('')
 
   }
   return (
@@ -31,16 +35,16 @@ setpassword('')
       <div className=' text-white w-full h-screen flex flex-col justify-around items-center'>
       <h1 className='text-4xl text-white  font-bold'>Signin/Signup</h1>
       <form  onSubmit={submithandeler} className="max-w-md w-full bg-gray-800 p-6 rounded-lg shadow-lg ">
-        <h1 className="text-2xl font-bold mb-6 text-center text-yellow-300">Prime<p className='text-orange-700 inline-block'>Ride . . .</p> </h1>
+        <h1 className="text-4xl font-bold mb-6 text-center text-yellow-300">Prime<p className='text-orange-700 inline-block'>Ride . . .</p> </h1>
 
         <div className="mb-5">
-          <label htmlFor="email" className="block mb-2 text-lg font-medium">Your email</label>
+          <label htmlFor="email" className="block mb-2 text-lg font-medium">Your Email</label>
           <input 
             type="email" 
             id="email" 
             value={email}
             onChange={(e)=>{
-              setemail(e.target.value)
+              setEmailState(e.target.value)
             }}
             className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
             placeholder="Enter registered email" 
@@ -49,13 +53,13 @@ setpassword('')
         </div>
 
         <div className="mb-5">
-          <label htmlFor="password" className="block mb-2 text-lg font-medium">Your password</label>
+          <label htmlFor="password" className="block mb-2 text-lg font-medium">Your Password</label>
           <input 
             type="password" 
             id="password" 
             value={password}
             onChange={(e)=>{
-              setpassword(e.target.value)
+              setPasswordState(e.target.value)
             }}
             className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
             required 
