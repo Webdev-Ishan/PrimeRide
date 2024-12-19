@@ -5,7 +5,7 @@ import bg from '../assets/homebackground.jpg'
 const Home = () => {
   return (
     <div>
-      <div className='w-full  bg-cover bg-center pt-8 h-screen bg-blue-900 flex justify-between flex-col '
+      <div className='w-full border-b-black border-b-2 bg-cover bg-center pt-8 h-screen  flex justify-between flex-col '
       
       style={{ backgroundImage: `url(${bg})` }}
       >
@@ -14,7 +14,7 @@ const Home = () => {
           <div className='text-white hover:text-black text-3xl font-bold mt-2 hover:text- duration-300'>PrimeRide</div>
         </div>
 
-        <div className='bg-gradient-to-r from-purple-400 to-indigo-600 py-4 px-4 pb-7'>
+        <div className='bg-gradient-to-r from-purple-400 to-indigo-600 py-4 px-4 pb-5'>
           <h2 className='text-black text-2xl font-bold'>Get going with PrimeRide</h2>
           <Link to={'/Userlogin'} className='w-full flex items-center justify-center bg-black text-white text-3xl py-3 rounded-lg mt-5  hover:text-yellow-300  duration-300 '>Continue The Ride . . . .</Link>
         </div>
