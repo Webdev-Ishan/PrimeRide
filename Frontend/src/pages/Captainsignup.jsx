@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import background from '../assets/CaptainSignup.jpg'
 import { useState } from 'react';
 import {useDispatch} from 'react-redux'
-import { setemail,setpassword } from '../Features/userSlice';
+import { setemail,setpassword, setfullname,setuser,reset } from '../Features/userSlice';
 const Captainsignup = () => {
   const dispatch= useDispatch()
   const [email, setEmailState]= useState('');
@@ -17,11 +17,12 @@ e.preventDefault();
 
 dispatch(setemail(email));
 dispatch(setpassword(password));
+dispatch(setfullname(Firstname,Lastname));
 
 setcaptaindata({
-  Fullname:{
-  Firstname:Firstname,
-  Lastname:Lastname
+  fullname:{
+  firstname:Firstname,
+  lastname:Lastname
 },
   email:email,
   password:password

@@ -1,34 +1,53 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import background from '../assets/Usersignupbackground.jpg'
 import { useState } from 'react';
 import {useDispatch} from 'react-redux'
-import {setemail, setpassword} from '../Features/userSlice'
+import {setemail, setpassword,setfullname ,setuser,reset} from '../Features/userSlice'
+import axios from 'axios';
 
 const Usersignup = () => {
  const dispatch = useDispatch()
   const [email, setEmailState]= useState('');
   const [password, setPasswordState]= useState('');
-  const [userdata, setuserdata]= useState({});
+ // const [userdata, setuserdata]= useState({});
   const [Firstname, setFirstname]= useState('');
   const [Lastname, setLastname]= useState('');
+ const navigate= useNavigate();
 
-  const submithandeler=(e)=>{
+  const submithandeler= async (e)=>{
 e.preventDefault();
 
 dispatch(setemail(email));
 dispatch(setpassword(password));
+dispatch(setfullname({firstname:Firstname,lastname:Lastname}));
+
+const newUser={
+  fullname:{
+    firstname:Firstname,
+    lastname:Lastname
+  },
+    email:email,
+    password:password
+}
+
+try {
+
+  const response= await axios.post("http://localhost:4000/users/register",newUser);
+
+  if(response.status===201){
+    const data= response.data;
+   dispatch(setuser(data));
+   navigate('/Home')
+  
+  }
+} catch (error) {
+  console.log(error)
+}
 
 
-setuserdata({
-  Fullname:{
-  Firstname:Firstname,
-  Lastname:Lastname
-},
-  email:email,
-  password:password
-})
 
+dispatch(reset());
 
 setEmailState('')
 setPasswordState('')
