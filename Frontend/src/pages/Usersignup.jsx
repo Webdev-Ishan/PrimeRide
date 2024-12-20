@@ -33,7 +33,7 @@ const newUser={
 
 try {
 
-  const response= await axios.post("http://localhost:4000/users/register",newUser);
+  const response= await axios.post(`${import.meta.env.VITE_BASE_URL}/register`,newUser);
 
   if(response.status===201){
     const data= response.data;
