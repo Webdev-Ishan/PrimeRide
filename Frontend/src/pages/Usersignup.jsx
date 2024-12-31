@@ -10,7 +10,7 @@ const Usersignup = () => {
  const dispatch = useDispatch()
   const [email, setEmailState]= useState('');
   const [password, setPasswordState]= useState('');
- // const [userdata, setuserdata]= useState({});
+ const [userdata, setuserdata]= useState({});
   const [Firstname, setFirstname]= useState('');
   const [Lastname, setLastname]= useState('');
  const navigate= useNavigate();
@@ -28,15 +28,17 @@ const newUser={
     lastname:Lastname
   },
     email:email,
-    password:password
+    password:password,
+    isloggedin:true
 }
 
 try {
 
-  const response= await axios.post(`${import.meta.env.VITE_BASE_URL}/register`,newUser);
+  const response= await axios.post(`${import.meta.env.VITE_Base_URL}/users/register`,newUser);
 
   if(response.status===201){
     const data= response.data;
+  localStorage.setItem('token', response.data.token);
    dispatch(setuser(data));
    navigate('/Home')
   
@@ -54,6 +56,7 @@ setPasswordState('')
 setFirstname('')
 setLastname('')
 
+
   }
   return (
     <div className= ' bg-cover bg-center   '
@@ -61,8 +64,9 @@ setLastname('')
   >
       
     
-      <div className=' text-white w-full h-screen flex flex-col justify-around items-center'>
-      <form  onSubmit={submithandeler} className="max-w-md w-full bg-slate-800 border-black border-b-4 border-2 p-6 rounded-lg shadow-lg ">
+      <div className=' text-white w-full h-screen flex justify-center items-center p-4'>
+      <p className='text-yellow-500 font-semibold  duration-300 text-6xl w-1/3 mr-4 hidden md:block'>BECOME A USER AND FEEL THE LUXURY</p>
+      <form onSubmit={submithandeler} className="max-w-sm w-full bg-slate-800 bg-opacity-50 backdrop-filter backdrop-blur-lg border-white border-b-4 border-2 p-4 rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold mb-6 text-center text-yellow-400">Prime<p className='text-black inline-block'>Ride . . .</p> </h1>
 
 
@@ -78,7 +82,7 @@ setLastname('')
               setFirstname(e.target.value)
             }}
             className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-            placeholder="Enter Your FirstName" 
+            placeholder="Enter FirstName" 
             required 
           />
 
@@ -91,7 +95,7 @@ setLastname('')
               setLastname(e.target.value)
             }}
             className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-            placeholder="Enter Your LastName" 
+            placeholder="Enter Lastname" 
             required 
           />
 </div>
@@ -111,7 +115,7 @@ setLastname('')
               setEmailState(e.target.value)
             }}
             className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-            placeholder="Enter registered email" 
+            placeholder="Enter valid email" 
             required 
           />
         </div>

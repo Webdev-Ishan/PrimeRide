@@ -31,6 +31,7 @@ usercontroller.loginuser
 router.get('/profile',authmiddleware.authuser, usercontroller.getuserprofile)
 
 
-router.get('/logout',authmiddleware.authuser, usercontroller.logoutuser)
+
+router.post('/logout', authmiddleware.authuser, usercontroller.logoutuser);
 
 module.exports= router;

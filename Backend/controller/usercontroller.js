@@ -1,120 +1,88 @@
 const userModel = require('../Models/usermodel'); // Acquire the user model
 const userService = require('../Services/userService');
 const { validationResult } = require('express-validator');
-const blacklisttoken= require('../Models/blacklist.model')
-
+const blacklisttoken = require('../Models/blacklist.model');
 
 module.exports.registerUser = async (req, res, next) => {
-    const error = validationResult(req);
+  const error = validationResult(req);
 
-    if (!error.isEmpty()) {
-        return res.status(400).json({ errors: error.array() }); // Return 400 for validation errors
-    }
+  if (!error.isEmpty()) {
+    return res.status(400).json({ errors: error.array() });
+  }
 
-   // console.log('Request Body:', req.body);
+  const { fullname, email, password } = req.body;
+  const ifuseralreadyexist = await userModel.findOne({ email });
+  if (ifuseralreadyexist) {
+    return res.status(400).json({ message: "User already exists" });
+  }
 
-    const { fullname, email, password } = req.body;
-    const ifuseralreadyexist= await userModel.findOne({email});
-    if(ifuseralreadyexist){
-        return res.status(400).json({ message: "User already exist" });
-    }
+  try {
+    const hashpassword = await userModel.hashpassword(password);
 
-    try {
-        // Handle fullname split if it's a single string
-        
-        
-        // Hash password (ensure it's awaited if the function is asynchronous)
-        const hashpassword = await userModel.hashpassword(password);
+    const user = await userService.createUser({
+      firstname: fullname.firstname,
+      lastname: fullname.lastname,
+      email,
+      password: hashpassword,
+    });
 
-        // Create user
-        const user = await userService.createUser({
-            firstname:fullname.firstname,
-            lastname:fullname.lastname,
-            email,
-            password: hashpassword,
-        });
+    const token = user.generateAuthtoken();
 
-        console.log('User Created:', user);
-
-        // Generate auth token (ensure method exists)
-        const token = user.generateAuthtoken();
-
-        // Send response
-        res.status(201).json({ token, user });
-    } catch (err) {
-        console.error('Error during user registration:', err.message);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+    res.status(201).json({ token, user });
+  } catch (err) {
+    console.error('Error during user registration:', err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
 
+module.exports.loginuser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
+  const { email, password } = req.body;
 
-
-module.exports.loginuser = async(req, res , next) =>{
-    const error = validationResult(req);
-
-    if (!error.isEmpty()) {
-        return res.status(400).json({ errors: error.array() }); // Return 400 for validation errors
+  try {
+    const user = await userModel.findOne({ email }).select('+password');
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-   // console.log('Request Body:', req.body);
-
-    const { email, password } = req.body;
-
-
-try {
-
-
-    const user= await userModel.findOne({email:email}). select('+password');
-
-    if(!user){
-        res.status(401).json({ error: 'Either email or password is incorrect' });
-    }
-    
-    const ismatch= await user.comparepassword(password);
-
-
-    
-    if(!ismatch){
-        res.status(401).json({ error: 'Either email or password is incorrect' });
+    const isMatch = await user.comparepassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    const token = user.generateAuthtoken();
+    res.status(200).json({ token, user });
+  } catch (error) {
+    console.error('Error during login:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
-  // Generate auth token (ensure method exists)
-  const token = user.generateAuthtoken();
-  
-  res.cookies('token', token);
+module.exports.getuserprofile = async (req, res, next) => {
+  res.status(200).json(req.user);
+};
 
-  // Send response
-  res.status(201).json({ token, user });
+module.exports.logoutuser = async (req, res, next) => {
+  const token = req.cookies.token || (req.headers.authorization?.split(' ')[1]);
 
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
 
+  try {
+    // Add the token to the blacklist database
+    await blacklisttoken.create({ token });
 
-} catch (error) {
-     console.error('Error during user registration:', error.message);
-        res.status(500).json({ error: 'Either email or password is incorrect' });
-}
+    // Clear the token from cookies
+    res.clearCookie('token', { httpOnly: true, secure: true });
 
-
-}
-
-
-module.exports.getuserprofile= async (req, res, next)=>{
-
-// but we want to ensure that the data of profile will only visible to the person who is
-// currently logged in and not to someone else so we will set up a middle ware in the
-// middleware folders
-res.status(200).json(req.user);
-
-
-}
-
-module.exports.logoutuser= async (req, res,next)=>{
-
-
-    res.clearCookie('token');
-    const token = req.cookies.token || (req.headers.authorization?.split(' ')[1]);
-
-    await blacklisttoken.create({token});
-    res.status(200).json({message:"Logged out sucessfully!!"})
-}
+    return res.status(200).json({ message: "Logged out successfully!!" });
+  } catch (error) {
+    console.error('Error during logout:', error.message);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};

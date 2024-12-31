@@ -1,30 +1,41 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import background from '../assets/captainbackground.jpg'
-import {useDispatch} from 'react-redux'
-import {setemail, setpassword} from '../Features/userSlice'
+import {useDispatch, useSelector} from 'react-redux'
+import {logincaptain} from '../Features/captainSlice'
 const Captainlogin = () => {
     
   const dispatch = useDispatch();
   const [email, setEmailState]= useState('');
   const [password, setPasswordState]= useState('');
-  const [captaindata, setcaptaindata]= useState({})
+  const navigate = useNavigate();
+  const {loading, error} = useSelector((state)=> state.captain);
 
-  const submithandeler=(e)=>{
+  const submithandeler= async (e)=>{
 e.preventDefault();
 
-dispatch(setemail(email));
-dispatch(setpassword(password));
-
-setcaptaindata({
+const captaindata={
   email:email,
   password:password
-})
-
+}
 
 setEmailState('')
 setPasswordState('')
+
+try {
+  
+const resultAction= await dispatch(logincaptain(captaindata))
+
+if(resultAction.meta.requestStatus=== 'fulfilled'){
+  navigate('/Captainhome')}
+  else{
+    console.log('Login failed: ', resultAction.payload)
+  }
+
+} catch (error) {
+  console.log("Error during login: ", error)
+}
 
   }
   return (
@@ -34,9 +45,9 @@ setPasswordState('')
   >
       
     
-      <div className=' text-white w-full h-screen flex flex-col justify-around items-center'>
-      <h1 className='text-5xl text-orange-500  font-bold'>Signin/Signup</h1>
-      <form  onSubmit={submithandeler} className="max-w-md w-full border-2 border-white bg-gradient-to-r from-slate-800 to-zinc-500 p-6 rounded-lg shadow-lg ">
+      <div className=' text-white w-full h-screen flex justify-center items-center p-4'>
+      <p className='text-[#f0e68c] font-semibold duration-300 text-7xl w-1/4 mr-4 hidden md:block'>Enter the World of Rides</p>
+      <form  onSubmit={submithandeler} className="max-w-md w-full border-2 border-white bg-black p-6 rounded-lg shadow-lg ">
         <h1 className="text-4xl font-bold mb-6 text-center text-orange-500">Prime<p className='text-white inline-block'>Ride . . .</p> </h1>
 
         <div className="mb-4">
@@ -75,16 +86,16 @@ setPasswordState('')
 
         <button 
           type="submit" 
-          className="text-black mb-3 border-2 bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg w-full px-5 py-3 transition duration-200 ease-in-out"
+          className="text-black mb-3 border-2 bg-orange-400  hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg w-full px-5 py-3 transition duration-300 ease-in-out"
         >
-          Signin as Captain
+          {loading ? 'Logging in...' : 'Sign in as Captain'}
         </button>
 
 <p className='text-center mb-4'>Join the Batalian? <Link className='text-blue-600' to={'/Captainsignup'}> Became a Captain</Link></p>
         <Link 
         to={'/Userlogin'}
           type="submit" 
-          className="text-white mb-5 bg-gradient-to-r border-2 hover:border-orange-500 from-fuchsia-600 to-blue-500 flex justify-center items-center focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg w-full px-5 py-3 transition duration-200 ease-in-out"
+          className="text-white mb-5 bg-gradient-to-r border-2 hover:border-orange-500 bg-blue-600 flex justify-center items-center focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg w-full px-5 py-3 transition duration-200 ease-in-out"
         >
           Sign in as User
         </Link>
