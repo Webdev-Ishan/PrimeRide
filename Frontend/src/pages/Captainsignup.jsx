@@ -48,7 +48,7 @@ const Captainsignup = () => {
         const data = response.data;
         localStorage.setItem('token', data.token); // Store token in local storage
         dispatch(setcaptain(data)); // Dispatch action to set captain data in Redux state
-        console.log(data);
+        //console.log(data);
         navigate('/CaptainHome'); // Navigate to Home page on successful registration
       }
     } catch (error) {
