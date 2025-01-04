@@ -67,10 +67,10 @@ const Captainsignup = () => {
   };
 
   return (
-    <div className='bg-cover bg-center' style={{ backgroundImage: `url(${background})` }}>
+    <div className='bg-cover bg-center p-15' style={{ backgroundImage: `url(${background})` }}>
       <div className='text-white w-full h-screen flex justify-center items-center p-4'>
         <p className='text-white font-semibold hover:text-blue-500 duration-300 text-6xl w-1/4 mr-4 hidden md:block'>BECOME A CAPTAIN AND LEAD THE WAY</p>
-        <form onSubmit={submithandeler} className="max-w-sm w-full bg-slate-800 border-white border-b-4 border-2 p-4 rounded-lg shadow-lg">
+        <form onSubmit={submithandeler} className="max-w-sm w-full bg-slate-800 border-white border-b-4 border-2 p-4 rounded-lg shadow-lg mt-8 mb-8">
           <h1 className="text-3xl font-bold mb-4 text-center text-yellow-400">Prime<p className='text-black inline-block'>Ride . . .</p></h1>
 
           <div className="mb-3">
@@ -94,7 +94,7 @@ const Captainsignup = () => {
                 onChange={(e) => {
                   setLastname(e.target.value);
                 }}
-                className="bg-gray-700 border border-gray-600 text-white text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
+                className="bg-gray-700 border border-gray-600 text-white text-base rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2"
                 placeholder="Enter Your LastName"
                 required
               />
