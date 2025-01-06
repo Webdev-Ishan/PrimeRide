@@ -13,7 +13,7 @@ const Home = () => {
 
   const  [pickup, setpickup] = useState('')
   const  [dropoff, setdropoff] = useState('')
-  
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [navpara, setnavpara] = useState(" Ensure a safe and secure ride with our trusted drivers and advanced tracking system.")
 
   const navparaMessages = [
@@ -23,6 +23,14 @@ const Home = () => {
     "Enjoy affordable and transparent pricing with no hidden charges."
   ];
 
+  const [location,setlocation]= useState('');
+
+
+  const selectedlocation= (e)=>{
+    setlocation(location);
+    const rideprice = document.getElementById('rideprice');
+    rideprice.style.display='block'
+  }
 
 
   useEffect(() => {
@@ -58,14 +66,31 @@ e.preventDefault();
   
 
 
+  const handleLocationClick = (location) => {
+    const panel= document.getElementById('locationpanel')
+    panel.classList.add('hidden')
+    setSelectedLocation(location);
+    selectedlocation(location);
+  };
+
+  const handleRidepriceclick=()=>{
+
+    const rideprice= document.getElementById('rideprice')
+    rideprice.classList.add('hidden')
+    const panel= document.getElementById('locationpanel')
+    panel.classList.remove('block')
+    setSelectedLocation(null);
+  }
+
+
   return (
     <div className="w-full h-screen overflow-y-auto">
 
  <nav className="flex justify-between items-center p-2 bg-black">
   <Link to={'/'}>
-        <div className="text-white flex gap-4 text-2xl font-bold">
+        <div  className=" bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent flex gap-4 text-3xl font-semibold">
          <span>PrimeRide</span> 
-          <img className='w-8 h-4 rounded-lg border-2 border-pink-400 ' src={logo} alt="" />
+         
         </div>
 
         </Link>
@@ -110,19 +135,22 @@ e.preventDefault();
         />
 
         <img src={logo} alt="Logo" className="absolute border-4 border-blue-800 top-4 left-4 w-12 rounded-3xl" />
-        <p className="absolute bottom-10 left-1/2 mb-28 transform -translate-x-1/2 text-6xl
+        <p    style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-28 transform -translate-x-1/2 text-6xl
         bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center  drop-shadow-lg font-bold">
         
-          Ride With Us Ride With Style
+          Ride With Us Ride With Trend
         </p>
       </div>
 
-      {/* Additional Content */}
+      {/* Heading Content Section */}
       <div className="w-full bg-gradient-to-r from-gray-800 to-gray-300 pt-8">
         <div className='flex justify-center items-center gap-5 mb-6'>
-        <h1 className="text-6xl font-bold text-pretty mb-4 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent ml-6"
-        >Find A Ride</h1>
-        <img src={logo2} alt=""  className='w-24 h-16 rounded-xl border-4 border-black m-3  hover:border-yellow-500 duration-300'/>
+          <h1 className="text-6xl font-bold text-pretty mb-4 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent ml-6"
+            style={{ WebkitTextStroke: "3px black" }}
+          >
+            Find A Ride
+          </h1>
+          <img src={logo2} alt="" className='w-24 h-16 rounded-xl border-4 border-black m-3 hover:border-yellow-500 duration-300' />
         </div>
        
 
@@ -162,20 +190,58 @@ e.preventDefault();
             className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter dropoff location" required />
           </div>
 
-          <button type="submit" className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-2xl w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+          <button type="submit"  style={{ WebkitTextStroke: "1px black" }} className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-2xl w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
        
         </form>
 
 
 
-
-
-
-
-
+{/* Location Panel */}
         <div className='w-full h-auto p-3 hidden duration-300' id='locationpanel'>
-         <Locationpanel />
+         <Locationpanel onLocationClick={handleLocationClick}  />
         </div>  
+
+
+
+     {/* Ride Price Section */}
+     <div id='rideprice'  className='w-full hidden h-auto p-3 duration-300'>
+          {selectedLocation && (
+            <div className="mt-4 p-4 bg-black text-white rounded-lg shadow-lg">
+              <h2 className="text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold">Selected Location</h2>
+              <p className="mt-2">{selectedLocation}</p>
+              <div className='mt-4'>
+
+                <div className='mb-4 cursor-pointer'>
+                  <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Car Details</h2>
+                  <p className='text-lg bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300 '>Travel Expense: $20</p>
+                </div>
+
+                <div className='mb-4 cursor-pointer'>
+                  <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Bike Details</h2>
+                  <p className='text-lg  bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $10</p>
+                </div>
+
+                <div className='mb-4 cursor-pointer'>
+                  <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Auto Details</h2>
+                  <p className='text-lg  bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $15</p>
+                </div>
+
+                <div className='mb-4'>
+                  <h2 
+                 onClick={handleRidepriceclick()}
+                  
+                  className='text-md cursor-pointer hover:text-blue-500 duration-500  text-white font-light'>Back to Locations 
+                    
+                    <img className='w-6 h-4 border-2 hover:border-yellow-400' src="https://imgs.search.brave.com/Q0BH0OfF6FehYNwtzEd7-RyKO6iq7fXdoAXk7lNgE3I/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jbGlw/YXJ0LWxpYnJhcnku/Y29tL2ltYWdlcy84/VEc2YUVFRWMuanBn" alt="" /></h2>
+                  
+                </div>
+
+              </div>
+            </div>
+          )}
+        </div>
+
+
 
         {/* Additional Content to Enable Scrolling */}
         <div  className="text-lg   p-6  text-white bg-black w-full border-t-4 border-b-2 border-black" >
