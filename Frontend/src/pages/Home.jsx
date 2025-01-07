@@ -81,21 +81,20 @@ e.preventDefault();
         </div>
 
         <ul className="flex gap-6">
-          <Link to={'/Userlogin'}>
-          <button className='rounded-2xl hover:bg-slate-200 bg-white text-black p-1 '>
-          <li className=" text-md   cursor-pointer font-extralight">UserLogin</li>
-          </button>
-          
+
+        <Link to={'/Userlogin'}>
+            <button className='rounded-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white p-2 hover:bg-black hover:text-white border-white border-2'>
+              <li className="text-black text-md font-semibold cursor-pointer">UserLogin</li>
+            </button>
           </Link>
          
 
-         <Link to={'/Usersignup'}>
-          
-          <button className='rounded-2xl hover:bg-slate-200 bg-white text-black  p-1 '>
-          <li className=" text-md   font-extralight cursor-pointer  ">UserSignUp</li>
-          </button>
-
+          <Link to={'/Usersignup'}>
+            <button className='rounded-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white p-2 hover:bg-black hover:text-white border-white border-2'>
+              <li className="text-black text-md font-semibold cursor-pointer">UserSignUp</li>
+            </button>
           </Link>
+
         </ul>
       </nav>
     
@@ -115,7 +114,7 @@ e.preventDefault();
 
         <img src={logo} alt="Logo" className="absolute border-4 border-rose-400 top-4 left-4 w-12 rounded-3xl" />
         <p style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-28 transform -translate-x-1/2 text-6xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
-          Ride <span className='text-white'>With</span>  Us  <span className='text-white'>Ride</span> With <span className='text-white'>Trends</span> 
+         <span className='block mb-32 mt-8'>PrimeRide</span> Ride With Us Ride With Comfort
         </p>
       </div>
 

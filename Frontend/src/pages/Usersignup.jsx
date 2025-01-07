@@ -5,6 +5,7 @@ import { useState } from 'react';
 import {useDispatch} from 'react-redux'
 import {setemail, setpassword,setfullname ,setuser,reset} from '../Features/userSlice'
 import axios from 'axios';
+import {useTypewriter,Cursor} from 'react-simple-typewriter'
 
 const Usersignup = () => {
  const dispatch = useDispatch()
@@ -14,6 +15,14 @@ const Usersignup = () => {
   const [Firstname, setFirstname]= useState('');
   const [Lastname, setLastname]= useState('');
  const navigate= useNavigate();
+
+ const [navpara] = useTypewriter({
+    words:['LUXURY','COMFORT','SAFETY','SECURITY','PRIVACY','FREEDOM'] ,
+    loop: 0,
+    typeSpeed: 200, // Faster typing speed
+    deleteSpeed: 100, // Faster deleting speed
+    delaySpeed: 500, // Shorter delay between words
+  });
 
   const submithandeler= async (e)=>{
 e.preventDefault();
@@ -59,104 +68,119 @@ setLastname('')
 
   }
   return (
-    <div className= ' bg-cover bg-center   '
-    style={{ backgroundImage: `url(${background})` }}
+    <div
+    className="bg-cover bg-center bg-black"
   >
-      
-    
-      <div className=' text-white w-full h-screen flex justify-center items-center p-4'>
-      <p className='text-yellow-500 font-semibold  duration-300 text-6xl w-1/3 mr-4 hidden md:block'>BECOME A USER AND FEEL THE LUXURY</p>
-      <form onSubmit={submithandeler} className="max-w-sm w-full bg-slate-800 bg-opacity-50 backdrop-filter backdrop-blur-lg border-white border-b-4 border-2 p-4 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold mb-6 text-center text-yellow-400">Prime<p className='text-black inline-block'>Ride . . .</p> </h1>
-
-
-        <div className="mb-4 ">
-          
-          <label htmlFor="text" className="block mb-2 text-lg font-medium text-yellow-400">Your Name Please</label>
-          <div className='flex gap-3 '>
-          <input 
-            type="text" 
-            id="Firstname" 
-            value={Firstname}
-            onChange={(e)=>{
-              setFirstname(e.target.value)
-            }}
-            className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-            placeholder="Enter FirstName" 
-            required 
-          />
-
-
-          <input 
-            type="text" 
-            id="Lastname" 
-            value={Lastname}
-            onChange={(e)=>{
-              setLastname(e.target.value)
-            }}
-            className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-            placeholder="Enter Lastname" 
-            required 
-          />
-</div>
+    <div className="text-white w-full h-screen flex justify-center items-center p-4">
+      <p className="bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-light text-5xl  w-2/3 md:w-1/3 mr-4 hidden md:block">
+     BECOME A USER AND FEEL THE JOY OF RIDING WITH <span className='text-white font-normal'>{navpara}</span>  <Cursor className="text-white" cursorStyle="|" />
+      </p>
+      <form
+        onSubmit={submithandeler}
+        className="w-11/12 md:w-1/3 bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg border-2 border-b-4 border-white p-4 rounded-lg shadow-lg"
+      >
+        <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">
+          Prime
+          <p className="text-white inline-block">Ride . . .</p>
+        </h1>
+  
+        <div className="mb-3">
+          <label
+            htmlFor="text"
+            className="block mb-1 text-sm md:text-base font-medium bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent"
+          >
+            Your Name Please
+          </label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              id="Firstname"
+              value={Firstname}
+              onChange={(e) => {
+                setFirstname(e.target.value);
+              }}
+              className="bg-gray-800 border border-gray-700 text-white text-sm md:text-base rounded-lg focus:ring-fuchsia-500 focus:border-fuchsia-500 block w-full p-2"
+              placeholder="First Name"
+              required
+            />
+            <input
+              type="text"
+              id="Lastname"
+              value={Lastname}
+              onChange={(e) => {
+                setLastname(e.target.value);
+              }}
+              className="bg-gray-800 border border-gray-700 text-white text-sm md:text-base rounded-lg focus:ring-fuchsia-500 focus:border-fuchsia-500 block w-full p-2"
+              placeholder="Last Name"
+              required
+            />
+          </div>
         </div>
-
-
-
-
-
-        <div className="mb-4">
-          <label htmlFor="email" className="block mb-2 text-lg font-medium text-yellow-400">Your Email</label>
-          <input 
-            type="email" 
-            id="email" 
+  
+        <div className="mb-3">
+          <label
+            htmlFor="email"
+            className="block mb-1 text-sm md:text-base font-medium bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent"
+          >
+            Your Email
+          </label>
+          <input
+            type="email"
+            id="email"
             value={email}
-            onChange={(e)=>{
-              setEmailState(e.target.value)
+            onChange={(e) => {
+              setEmailState(e.target.value);
             }}
-            className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-            placeholder="Enter valid email" 
-            required 
+            className="bg-gray-800 border border-gray-700 text-white text-sm md:text-base rounded-lg focus:ring-fuchsia-500 focus:border-fuchsia-500 block w-full p-2"
+            placeholder="Enter Your Email"
+            required
           />
         </div>
-
-        <div className="mb-4">
-          <label htmlFor="password" className="block mb-2 text-lg font-medium text-yellow-400">Your Password</label>
-          <input 
-            type="password" 
-            id="password" 
+  
+        <div className="mb-3">
+          <label
+            htmlFor="password"
+            className="block mb-1 text-sm md:text-base font-medium bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent"
+          >
+            Your Password
+          </label>
+          <input
+            type="password"
+            id="password"
             value={password}
-            onChange={(e)=>{
-              setPasswordState(e.target.value)
+            onChange={(e) => {
+              setPasswordState(e.target.value);
             }}
-            className="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-            required 
-            placeholder='Password'
+            className="bg-gray-800 border border-gray-700 text-white text-sm md:text-base rounded-lg focus:ring-fuchsia-500 focus:border-fuchsia-500 block w-full p-2"
+            placeholder="Enter Your Password"
+            required
           />
         </div>
-
-        <div className="flex items-start mb-5">
-          {/* You can add a checkbox for "Remember me" or other options here if needed */}
-        </div>
-
-        <button 
-          type="submit" 
-          className="text-white mb-5 bg-black hover:opacity-70 hover:border-yellow-400 border-2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg w-full px-5 py-3 transition duration-200 ease-in-out"
+  
+        <button
+          type="submit"
+          className="text-white bg-black hover:bg-gray-800 hover:border-fuchsia-400 border-2 focus:ring-4 focus:outline-none focus:ring-fuchsia-500 font-medium rounded-lg text-sm w-full px-4 py-2 transition duration-200 ease-in-out"
         >
           SignUp as User
         </button>
-
-<p className='text-center mb-3'>Already have an Account ?<Link className='text-blue-700' to={'/Userlogin'}> Login to Account</Link></p>
-      <p className='text-white text-sm text-center hover:text-slate-300 '>
-      © 2024 PrimeRide Technologies Inc.
-      </p>
-
+  
+        <p className="text-center mt-3 text-xs text-gray-400">
+          Already have an Account?
+          <Link
+            className="text-blue-600 px-2 py-1 rounded-lg "
+            to={"/Userlogin"}
+          >
+            Login to Account
+          </Link>
+        </p>
+        <p className="text-gray-400 text-xs text-center hover:text-gray-300 mt-2">
+          © 2024 PrimeRide Technologies Inc.
+        </p>
       </form>
-      </div>
-
-      
-     
     </div>
+  </div>
+  
+  
   );
 }
 
