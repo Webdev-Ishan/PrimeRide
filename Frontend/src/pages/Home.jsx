@@ -6,15 +6,16 @@ import logo2 from '../assets/Homelogo.jpg';
 import home2 from '../assets/Home2.jpg';
 import Locationpanel from '../components/LocationPanel'
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
-
+import {useTypewriter,Cursor} from 'react-simple-typewriter'
 
 const Home = () => {
 
   const  [pickup, setpickup] = useState('')
   const  [dropoff, setdropoff] = useState('')
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [navpara, setnavpara] = useState(" Ensure a safe and secure ride with our trusted drivers and advanced tracking system.")
+  const [showLocationPanel, setShowLocationPanel] = useState(false);
+
+
 
   const navparaMessages = [
     "Ensure a safe and secure ride with our trusted drivers and advanced tracking system.",
@@ -23,64 +24,40 @@ const Home = () => {
     "Enjoy affordable and transparent pricing with no hidden charges."
   ];
 
-  const [location,setlocation]= useState('');
+  const [navpara] = useTypewriter({
+    words: navparaMessages,
+    loop: 0,
+    typeSpeed: 50, // Faster typing speed
+    deleteSpeed: 30, // Faster deleting speed
+    delaySpeed: 500, // Shorter delay between words
+  });
 
 
-  const selectedlocation= (e)=>{
-    setlocation(location);
-    const rideprice = document.getElementById('rideprice');
-    rideprice.style.display='block'
-  }
+  
 
-
-  useEffect(() => {
-    // using useeffect to change the navpara message whenever the page is rendered
-    let index= 0; 
-
-    const interval = setInterval(() => {
-      
-// setinterval to change the navpara message every 5 seconds
-// we have made list of messages in an arrray this is its index
-
-index= (index+1)%navparaMessages.length; // we are incrementing the index by 1 and then taking the modulus of the length of the array so that the index does not exceed the length of the array
-
-setnavpara(navparaMessages[index]); // setting up the value
-
-    }, 1000);
-
-return () => clearInterval(interval);
-// clearing the interval
-  },[])
-
-
+ 
   const submithandler = (e) => {
 e.preventDefault();
 
 
   }
 
-  const panelOpen= ()=>{
-    const panel = document.getElementById('locationpanel')
-    panel.classList.toggle('hidden')
-  }
-  
-
-
-  const handleLocationClick = (location) => {
-    const panel= document.getElementById('locationpanel')
-    panel.classList.add('hidden')
-    setSelectedLocation(location);
-    selectedlocation(location);
+  const panelOpen = () => {
+    setShowLocationPanel(!showLocationPanel);
   };
 
-  const handleRidepriceclick=()=>{
+  const handleLocationClick = (location) => {
+    setSelectedLocation(location);
+    setShowLocationPanel(false);
+  };
 
-    const rideprice= document.getElementById('rideprice')
-    rideprice.classList.add('hidden')
-    const panel= document.getElementById('locationpanel')
-    panel.classList.remove('block')
+  const handleBackToLocations = () => {
     setSelectedLocation(null);
-  }
+    setShowLocationPanel(true);
+  };
+
+
+
 
 
   return (
@@ -96,15 +73,17 @@ e.preventDefault();
         </Link>
 
 
-<div className='text-white'>
-
-<p className='transition-opacity duration-500 sm:block hidden m-4'> {navpara}</p>
-</div>
+        <div className='text-white'>
+          <p className="transition-opacity duration-500 sm:block hidden m-4">
+            <span className="text-lg font-light bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">{navpara}</span>
+            <Cursor cursorStyle="|" />
+          </p>
+        </div>
 
         <ul className="flex gap-6">
           <Link to={'/Userlogin'}>
-          <button className='rounded-3xl bg-gradient-to-r from-pink-400 to-indigo-600 text-white p-2  border-white border-2'>
-          <li className="text-white text-md hover:text-black  cursor-pointer font-extralight">UserLogin</li>
+          <button className='rounded-2xl hover:bg-slate-200 bg-white text-black p-1 '>
+          <li className=" text-md   cursor-pointer font-extralight">UserLogin</li>
           </button>
           
           </Link>
@@ -112,8 +91,8 @@ e.preventDefault();
 
          <Link to={'/Usersignup'}>
           
-          <button className='rounded-3xl bg-gradient-to-r from-pink-400 to-indigo-600  p-2  border-white border-2'>
-          <li className="text-white text-md hover:text-black font-extralight cursor-pointer  ">UserSignUp</li>
+          <button className='rounded-2xl hover:bg-slate-200 bg-white text-black  p-1 '>
+          <li className=" text-md   font-extralight cursor-pointer  ">UserSignUp</li>
           </button>
 
           </Link>
@@ -134,11 +113,9 @@ e.preventDefault();
           muted
         />
 
-        <img src={logo} alt="Logo" className="absolute border-4 border-blue-800 top-4 left-4 w-12 rounded-3xl" />
-        <p    style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-28 transform -translate-x-1/2 text-6xl
-        bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center  drop-shadow-lg font-bold">
-        
-          Ride With Us Ride With Trend
+        <img src={logo} alt="Logo" className="absolute border-4 border-rose-400 top-4 left-4 w-12 rounded-3xl" />
+        <p style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-28 transform -translate-x-1/2 text-6xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
+          Ride <span className='text-white'>With</span>  Us  <span className='text-white'>Ride</span> With <span className='text-white'>Trends</span> 
         </p>
       </div>
 
@@ -170,9 +147,7 @@ e.preventDefault();
               setpickup(e.target.value)
             }
           } 
-           onClick={()=>{
-                panelOpen();
-              }}    
+           onClick={panelOpen}    
               
               className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter pickup location" required />
           </div>
@@ -184,9 +159,7 @@ e.preventDefault();
               setdropoff(e.target.value)
             }}
             
-            onClick={()=>{
-              panelOpen();
-            }}
+            onClick={panelOpen}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter dropoff location" required />
           </div>
 
@@ -196,50 +169,48 @@ e.preventDefault();
 
 
 
-{/* Location Panel */}
-        <div className='w-full h-auto p-3 hidden duration-300' id='locationpanel'>
-         <Locationpanel onLocationClick={handleLocationClick}  />
-        </div>  
+        {/* Location Panel Section */}
+        {showLocationPanel && (
+          <div className='w-full h-auto p-3 duration-300' id='locationpanel'>
+            <Locationpanel onLocationClick={handleLocationClick} />
+          </div>
+        )}
 
 
-
-     {/* Ride Price Section */}
-     <div id='rideprice'  className='w-full hidden h-auto p-3 duration-300'>
-          {selectedLocation && (
-            <div className="mt-4 p-4 bg-black text-white rounded-lg shadow-lg">
-              <h2 className="text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold">Selected Location</h2>
-              <p className="mt-2">{selectedLocation}</p>
-              <div className='mt-4'>
-
-                <div className='mb-4 cursor-pointer'>
-                  <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Car Details</h2>
-                  <p className='text-lg bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300 '>Travel Expense: $20</p>
+       {/* Ride Price Section */}
+       {!showLocationPanel && (
+          <div id='rideprice' className='w-full h-auto p-3 duration-300'>
+            {selectedLocation && (
+              <div className="mt-4 p-4 bg-black text-white rounded-lg shadow-lg">
+                <h2 className="text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold">Selected Location</h2>
+                <p className="mt-2">{selectedLocation}</p>
+                <div className='mt-4'>
+                  <div className='mb-4 cursor-pointer'>
+                    <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Car Details</h2>
+                    <p className='text-lg bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $20</p>
+                  </div>
+                  <div className='mb-4 cursor-pointer'>
+                    <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Bike Details</h2>
+                    <p className='text-lg bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $10</p>
+                  </div>
+                  <div className='mb-4 cursor-pointer'>
+                    <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Auto Details</h2>
+                    <p className='text-lg bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $15</p>
+                  </div>
+                  <div className='mb-4'>
+                    <h2
+                      onClick={handleBackToLocations}
+                      className='text-md cursor-pointer hover:text-blue-500 duration-500 text-white font-light'
+                    >
+                      Back to Locations
+                      <img className='w-6 h-4 border-2 hover:border-yellow-400' src="https://imgs.search.brave.com/Q0BH0OfF6FehYNwtzEd7-RyKO6iq7fXdoAXk7lNgE3I/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jbGlw/YXJ0LWxpYnJhcnku/Y29tL2ltYWdlcy84/VEc2YUVFRWMuanBn" alt="" />
+                    </h2>
+                  </div>
                 </div>
-
-                <div className='mb-4 cursor-pointer'>
-                  <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Bike Details</h2>
-                  <p className='text-lg  bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $10</p>
-                </div>
-
-                <div className='mb-4 cursor-pointer'>
-                  <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Auto Details</h2>
-                  <p className='text-lg  bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $15</p>
-                </div>
-
-                <div className='mb-4'>
-                  <h2 
-                 onClick={handleRidepriceclick()}
-                  
-                  className='text-md cursor-pointer hover:text-blue-500 duration-500  text-white font-light'>Back to Locations 
-                    
-                    <img className='w-6 h-4 border-2 hover:border-yellow-400' src="https://imgs.search.brave.com/Q0BH0OfF6FehYNwtzEd7-RyKO6iq7fXdoAXk7lNgE3I/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jbGlw/YXJ0LWxpYnJhcnku/Y29tL2ltYWdlcy84/VEc2YUVFRWMuanBn" alt="" /></h2>
-                  
-                </div>
-
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
 
 
