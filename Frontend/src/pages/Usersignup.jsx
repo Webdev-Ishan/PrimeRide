@@ -159,7 +159,7 @@ setLastname('')
   
         <button
           type="submit"
-          className="text-white bg-black hover:bg-gray-800 hover:border-fuchsia-400 border-2 focus:ring-4 focus:outline-none focus:ring-fuchsia-500 font-medium rounded-lg text-sm w-full px-4 py-2 transition duration-200 ease-in-out"
+          className="bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white hover:border-green-400 border-2 focus:ring-4 focus:outline-none focus:ring-fuchsia-500 font-medium rounded-lg text-sm w-full px-4 py-2 transition duration-200 ease-in-out"
         >
           SignUp as User
         </button>

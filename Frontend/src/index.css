@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.cursor {
+  @apply w-2 h-2 bg-pink-500 rounded-full absolute pointer-events-none transition-transform duration-100 ease-out;
+  box-shadow: 0 0 15px 5px rgba(255, 105, 180, 0.7);
+  animation: cursorAnimation 0.5s infinite alternate;
+}
+
+@keyframes cursorAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}

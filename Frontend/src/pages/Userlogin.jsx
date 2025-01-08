@@ -13,7 +13,7 @@ const Userlogin = () => {
 
 
 const [navpara] = useTypewriter({
-    words:['Enter the PrimeRide','Enjoy the PrimeRide','PrimeRide is the Best','PrimeRide is the Fastest','PrimeRide is the Safest'] ,
+    words:['Enter the PrimeRide..','Enjoy the PrimeRide..','PrimeRide is the Best..','PrimeRide is the Fastest..','PrimeRide is the Safest...'] ,
     loop: 0,
     typeSpeed: 100, // Faster typing speed
     deleteSpeed: 50, // Faster deleting speed
@@ -42,13 +42,13 @@ const [navpara] = useTypewriter({
   };
 
   return (
-<div className='bg-cover bg-center bg-black'>
-  <div className='w-full h-screen flex flex-col justify-around items-center  text-white'>
-    <h1 className=' text-light text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>{navpara}</h1>
-    <form onSubmit={submithandeler} className="max-w-sm w-10/12 bg-gray-900 p-4 rounded-lg shadow-md">
+    <div className='bg-cover bg-center min-h-screen flex items-center justify-center bg-black'>
+    <div className='w-full max-w-4xl p-6 bg-black bg-opacity-75 rounded-lg shadow-lg flex flex-col md:flex-row md:gap-5 justify-between items-center'>
+    <h1 className=' text-light text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-mono'>{navpara}</h1>
+    <form onSubmit={submithandeler} className="max-w-sm w-10/12 bg-gray-900 border-2 border-white p-4 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">
         Prime
-        <p className='inline-block'>Ride . . .</p>
+        <p className='inline-block text-white font-mono'>Ride . . .</p>
       </h1>
 
       <div className="mb-4">
@@ -92,7 +92,7 @@ const [navpara] = useTypewriter({
       </p>
       <Link
         to={'/Captainlogin'}
-        className="flex justify-center items-center bg-black hover:bg-slate-950 text-white focus:ring-4 focus:outline-none focus:ring-fuchsia-500 font-light rounded-lg text-sm w-full px-4 py-2 transition duration-200 ease-in-out"
+        className="flex justify-center border-2 border-white items-center bg-black hover:bg-slate-800 text-white focus:ring-4 focus:outline-none focus:ring-fuchsia-500 font-light rounded-lg text-sm w-full px-4 py-2 transition duration-200 ease-in-out"
       >
         Sign in as Captain
       </Link>

@@ -1,21 +1,22 @@
 import React from 'react';
 import logo from '../assets/Ride.png';
 import bg from '../assets/Homebg.webm';
-import { useState ,useRef} from 'react';
+import { useState} from 'react';
 import logo2 from '../assets/Homelogo.jpg';
 import home2 from '../assets/Home2.jpg';
 import Locationpanel from '../components/LocationPanel'
 import { Link } from 'react-router-dom';
 import {useTypewriter,Cursor} from 'react-simple-typewriter'
+import ConfirmRide from '../components/ConfirmRide';
+
 
 const Home = () => {
 
-  const  [pickup, setpickup] = useState('')
-  const  [dropoff, setdropoff] = useState('')
+  const [pickup, setpickup] = useState('');
+  const [dropoff, setdropoff] = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [showLocationPanel, setShowLocationPanel] = useState(false);
-
-
+  const [showLocationPanel, setShowLocationPanel] = useState(true);
+  const [selectedRide, setSelectedRide] = useState(null);
 
   const navparaMessages = [
     "Ensure a safe and secure ride with our trusted drivers and advanced tracking system.",
@@ -32,18 +33,30 @@ const Home = () => {
     delaySpeed: 500, // Shorter delay between words
   });
 
+  const [location, setlocation] = useState('');
 
-  
+  const [typeeffect] = useTypewriter({
+    words: ['Trends', 'Comfort', 'Trust', 'Dreams', 'Convenience', 'Amusement'],
+    loop: 0, // Infinite loop
+    typeSpeed: 100,
+    deleteSpeed: 50,
+    delaySpeed: 400,
+  });
 
- 
+  const selectedlocation = (location) => {
+    setlocation(location);
+    setShowLocationPanel(false);
+  };
+
   const submithandler = (e) => {
-e.preventDefault();
-
-
-  }
+    e.preventDefault();
+    setShowLocationPanel(false);
+    setSelectedRide(rides[0]);
+    // Handle form submission
+  };
 
   const panelOpen = () => {
-    setShowLocationPanel(!showLocationPanel);
+    setShowLocationPanel(true);
   };
 
   const handleLocationClick = (location) => {
@@ -51,11 +64,49 @@ e.preventDefault();
     setShowLocationPanel(false);
   };
 
+
   const handleBackToLocations = () => {
     setSelectedLocation(null);
     setShowLocationPanel(true);
   };
 
+  const handleRideClick = (ride) => {
+    setSelectedRide(ride);
+  };
+
+
+  const [text] = useTypewriter({
+    words: ['Style', 'Comfort', 'Safety', 'Affordability', 'Convenience', 'Reliability'],
+    loop: 0, // Infinite loop
+    typeSpeed: 100,
+    deleteSpeed: 50,
+    delaySpeed: 1000,
+  });
+
+
+
+
+
+  const rides = [
+    {
+      type: 'Car',
+      details: 'Comfortable and spacious car for your ride.',
+      expense: '$20',
+      image: 'https://img.freepik.com/free-vector/white-convertible-car-isolated-white-vector_53876-66815.jpg?t=st=1736313729~exp=1736317329~hmac=2c50f04da52a07e4cc8e072eef770e633ee8413aed3201f83f44dc21cc76d947&w=900'
+    },
+    {
+      type: 'Bike',
+      details: 'Fast and convenient bike for your ride.',
+      expense: '$10',
+      image: 'https://img.freepik.com/free-vector/red-scooter_1308-82607.jpg?t=st=1736315478~exp=1736319078~hmac=4a650d81e03ed5f0290363e35ab4c2e5bfb3e88d0e4f1e64b1b8afbaa6388e8c&w=740'
+    },
+    {
+      type: 'Auto',
+      details: 'Affordable and reliable auto for your ride.',
+      expense: '$15',
+      image: 'https://img.freepik.com/premium-vector/realistic-rikshaw-vector-illustration-concept_1253202-34901.jpg?w=740'
+    }
+  ];
 
 
 
@@ -83,15 +134,15 @@ e.preventDefault();
         <ul className="flex gap-6">
 
         <Link to={'/Userlogin'}>
-            <button className='rounded-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white p-2 hover:bg-black hover:text-white border-white border-2'>
-              <li className="text-black text-md font-semibold cursor-pointer">UserLogin</li>
+            <button className='rounded-3xl hover:border-green-400 bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white p-2 hover:bg-black hover:text-white border-white border-2'>
+              <li className="text-black text-md font-semibold  cursor-pointer">UserLogin</li>
             </button>
           </Link>
          
 
           <Link to={'/Usersignup'}>
-            <button className='rounded-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white p-2 hover:bg-black hover:text-white border-white border-2'>
-              <li className="text-black text-md font-semibold cursor-pointer">UserSignUp</li>
+            <button className='rounded-3xl hover:border-green-400 bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white p-2 hover:bg-black hover:text-white border-white border-2'>
+              <li className="text-black text-md font-semibold  cursor-pointer">UserSignUp</li>
             </button>
           </Link>
 
@@ -114,19 +165,19 @@ e.preventDefault();
 
         <img src={logo} alt="Logo" className="absolute border-4 border-rose-400 top-4 left-4 w-12 rounded-3xl" />
         <p style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-28 transform -translate-x-1/2 text-6xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
-         <span className='block mb-32 mt-8'>PrimeRide</span> Ride With Us Ride With Comfort
+         <span className='block mb-32 mt-8 font-mono text-green-400 '>PrimeRide</span> Ride With Us Ride With Comfort
         </p>
       </div>
 
       {/* Heading Content Section */}
-      <div className="w-full bg-gradient-to-r from-gray-800 to-gray-300 pt-8">
+      <div  className="w-full bg-slate-900 pt-8">
         <div className='flex justify-center items-center gap-5 mb-6'>
           <h1 className="text-6xl font-bold text-pretty mb-4 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent ml-6"
             style={{ WebkitTextStroke: "3px black" }}
           >
             Find A Ride
           </h1>
-          <img src={logo2} alt="" className='w-24 h-16 rounded-xl border-4 border-black m-3 hover:border-yellow-500 duration-300' />
+          <img src={logo2} alt="" className='w-16 h-12 rounded-3xl border-4 border-black m-3 hover:border-green-500 duration-300' />
         </div>
        
 
@@ -162,54 +213,55 @@ e.preventDefault();
             className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter dropoff location" required />
           </div>
 
-          <button type="submit"  style={{ WebkitTextStroke: "1px black" }} className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-2xl w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+
+
+
+          <div className='w-full h-auto p-3 duration-300' id='locationpanel'>
+              {rides.map((ride) => (
+                <div key={ride.type} className="mb-4 cursor-pointer flex items-center justify-center" onClick={() => handleRideClick(ride)}>
+                  <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-light'>{ride.type} Details</h2>
+                  <img className='w-8 h-6 border-2 border-green-400 rounded-3xl ml-2' src={ride.image} alt={ride.type} />
+                  <p className='text-lg bg-white pr-3 w-1/2 ml-5 text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: {ride.expense}</p>
+                </div>
+              ))}
+            </div>
+
+
+
+          <button type="submit"    style={{ WebkitTextStroke: "1px black" }} className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300  font-bold border-2 border-white rounded-lg text-2xl w-full px-5 py-2.5 text-center ">Submit</button>
        
         </form>
 
 
 
-        {/* Location Panel Section */}
-        {showLocationPanel && (
-          <div className='w-full h-auto p-3 duration-300' id='locationpanel'>
-            <Locationpanel onLocationClick={handleLocationClick} />
-          </div>
-        )}
+     
 
 
-       {/* Ride Price Section */}
-       {!showLocationPanel && (
-          <div id='rideprice' className='w-full h-auto p-3 duration-300'>
-            {selectedLocation && (
-              <div className="mt-4 p-4 bg-black text-white rounded-lg shadow-lg">
-                <h2 className="text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold">Selected Location</h2>
-                <p className="mt-2">{selectedLocation}</p>
-                <div className='mt-4'>
-                  <div className='mb-4 cursor-pointer'>
-                    <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Car Details</h2>
-                    <p className='text-lg bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $20</p>
-                  </div>
-                  <div className='mb-4 cursor-pointer'>
-                    <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Bike Details</h2>
-                    <p className='text-lg bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $10</p>
-                  </div>
-                  <div className='mb-4 cursor-pointer'>
-                    <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold'>Auto Details</h2>
-                    <p className='text-lg bg-white text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: $15</p>
-                  </div>
-                  <div className='mb-4'>
-                    <h2
-                      onClick={handleBackToLocations}
-                      className='text-md cursor-pointer hover:text-blue-500 duration-500 text-white font-light'
-                    >
-                      Back to Locations
-                      <img className='w-6 h-4 border-2 hover:border-yellow-400' src="https://imgs.search.brave.com/Q0BH0OfF6FehYNwtzEd7-RyKO6iq7fXdoAXk7lNgE3I/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jbGlw/YXJ0LWxpYnJhcnku/Y29tL2ltYWdlcy84/VEc2YUVFRWMuanBn" alt="" />
-                    </h2>
-                  </div>
-                </div>
+       
+
+
+{/* Ride Price Section */}
+<div className={`w-full h-auto p-3 duration-300 ${!showLocationPanel ? 'opacity-100' : 'opacity-0'} transition-opacity`} id='rideprice'>
+          {!showLocationPanel && selectedRide && (
+            <div id='rideprice' className='w-full h-auto p-3 duration-300 flex flex-col items-center'>
+              <div className="mt-4 p-4 border-2 border-white bg-black flex flex-col text-white rounded-lg shadow-lg w-full max-w-md">
+                <h2 className="text-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold text-center">{selectedRide.type} Details</h2>
+                <img className='w-full h-auto border-2 border-green-400 rounded-3xl mx-auto my-4' src={selectedRide.image} alt={selectedRide.type} />
+                <p className="mt-2 text-center">{selectedRide.details}</p>
+                <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">Travel Expense: <span className='text-white'>{selectedRide.expense}</span> </p>
+                <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">From : <span className='text-white'>{pickup}</span> </p>
+                <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">To : <span className='text-white'>{dropoff}</span> </p>
+              <Link className="mt-4 border-2 text-center border-white bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white px-4 py-2 rounded-lg hover:opacity-80 duration-300" onClick={() => handleLocationClick(selectedRide)}>  <button  >
+                  Confirm Ride
+                </button>
+                </Link>
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
+
+
+
 
 
 
@@ -265,11 +317,16 @@ e.preventDefault();
 
         <img src={home2} alt="" className='w-full h-full  ' />
 
-<div className="text-lg h-96 pt-12 p-6 text-white bg-black w-full  ">
-<h2 className="text-4xl font-bold mb-4 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">Privacy Policy</h2>
-          <p className="text-lg font-extralight mt-10 text-white">
-            At Primeride, we are committed to protecting your privacy. This Privacy Policy outlines our practices regarding the collection, use, and disclosure of your information when you use our services. We collect personal information that you provide to us, such as your name, email address, and phone number, as well as information about your rides and payment details. We use this information to provide and improve our services, communicate with you, and ensure the safety and security of our platform. We do not share your personal information with third parties except as necessary to provide our services or as required by law. By using Primeride, you agree to the terms of this Privacy Policy.
-          </p>
+<div className="text-lg h-full pt-12 flex flex-col gap-10 items-center p-6 text-white bg-black w-full  ">
+<h2 className="text-4xl font-light mb-4 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">Privacy Policy</h2>
+          
+           <p className="text-lg font-extralight gap-10  text-white">At Primeride, we are committed to protecting your privacy.</p>
+           <p className="text-lg font-extralight gap-10  text-white">This Privacy Policy outlines our practices regarding the collection, use, and disclosure of your information when you use our services.</p> 
+             <p className="text-lg font-extralight gap-10  text-white">We collect personal information that you provide to us, such as your name, email address, and phone number, as well as information about your rides and payment details.</p>
+             <p className="text-lg font-extralight gap-10  text-white"> We use this information to provide and improve our services, communicate with you, and ensure the safety and security of our platform.</p> 
+             <p className="text-lg font-extralight gap-10  text-white"> We do not share your personal information with third parties except as necessary to provide our services or as required by law. </p>
+              <p className="text-lg font-extralight gap-10  text-white">By using Primeride, you agree to the terms of this Privacy Policy.</p>
+          
 </div>
       
         

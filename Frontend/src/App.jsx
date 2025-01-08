@@ -11,10 +11,12 @@ import Userlogout from './pages/Userlogout'
 import Captainlogout from './pages/Captainlogout'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProtectedRoute2 from './components/ProtectedRoute2'
+import AnimatedCursor from './AnimatedCursor';
 
 const App = () => {
   return (
     <div>
+        <AnimatedCursor />
       <Routes>
         <Route path='/' element={<Start/>} />
         <Route path='/Userlogin' element={<Userlogin/>} />
