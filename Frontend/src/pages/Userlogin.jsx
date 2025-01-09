@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginuser } from '../Features/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import {useTypewriter,Cursor} from 'react-simple-typewriter'
-
+import taxi from '../assets/taxi.png'
 const Userlogin = () => {
   const dispatch = useDispatch();
   const [email, setEmailState] = useState('');
@@ -42,9 +42,14 @@ const [navpara] = useTypewriter({
   };
 
   return (
-    <div className='bg-cover bg-center min-h-screen flex items-center justify-center bg-black'>
-    <div className='w-full max-w-4xl p-6 bg-black bg-opacity-75 rounded-lg shadow-lg flex flex-col md:flex-row md:gap-5 justify-between items-center'>
-    <h1 className=' text-light text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-mono'>{navpara}</h1>
+    <div className='bg-cover border-4 border-black  bg-center w-full  pt-8 min-h-screen flex items-center justify-center ' 
+    
+    style={{ 
+      backgroundImage: `url(${taxi})`, 
+    }}
+  >
+    <div className='w-full max-w-4xl p-6  bg-opacity-75 rounded-lg shadow-lg flex flex-col md:flex-row md:gap-5 justify-between items-center'>
+    <h1 className=' text-light text-5xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-mono'>{navpara}</h1>
     <form onSubmit={submithandeler} className="max-w-sm w-10/12 bg-gray-900 border-2 border-white p-4 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">
         Prime

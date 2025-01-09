@@ -12,6 +12,7 @@ import Captainlogout from './pages/Captainlogout'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProtectedRoute2 from './components/ProtectedRoute2'
 import AnimatedCursor from './AnimatedCursor';
+import Waiting from './components/Waitingforcaptain'
 
 const App = () => {
   return (
@@ -23,7 +24,7 @@ const App = () => {
         <Route path='/Usersignup' element={<Usersignup/>} />
         <Route path='/Captainlogin' element={<Captainlogin/>}/>
         <Route path='/Captainsignup' element={<Captainsignup/>} />
-        
+        <Route path='/Waiting' element={<Waiting/>} />
         <Route path='/Home' element={
          < ProtectedRoute>
           <Home/>

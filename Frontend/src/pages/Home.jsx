@@ -7,7 +7,8 @@ import home2 from '../assets/Home2.jpg';
 import Locationpanel from '../components/LocationPanel'
 import { Link } from 'react-router-dom';
 import {useTypewriter,Cursor} from 'react-simple-typewriter'
-import ConfirmRide from '../components/ConfirmRide';
+import taxi from '../assets/taxi.png'
+import { gsap } from "gsap";
 
 
 const Home = () => {
@@ -43,25 +44,39 @@ const Home = () => {
     delaySpeed: 400,
   });
 
-  const selectedlocation = (location) => {
-    setlocation(location);
-    setShowLocationPanel(false);
-  };
+  // const selectedlocation = (location) => {
+  //   setlocation(location);
+  //   setShowLocationPanel(false);
+  // };
 
   const submithandler = (e) => {
     e.preventDefault();
     setShowLocationPanel(false);
     setSelectedRide(rides[0]);
     // Handle form submission
+     // Select the panel element
+  const panel = document.getElementById("rideprice");
+
+  // Animate the panel appearance
+  gsap.fromTo(
+    panel,
+    { opacity: 0, y: -50 }, // Starting state
+    { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" } // Ending state
+  );
+
   };
 
   const panelOpen = () => {
-    setShowLocationPanel(true);
+    setShowLocationPanel(!showLocationPanel);
   };
+
+  const rideconfirm=()=>{
+    setshowwaiting(false);
+    
+  }
 
   const handleLocationClick = (location) => {
     setSelectedLocation(location);
-    setShowLocationPanel(false);
   };
 
 
@@ -73,16 +88,6 @@ const Home = () => {
   const handleRideClick = (ride) => {
     setSelectedRide(ride);
   };
-
-
-  const [text] = useTypewriter({
-    words: ['Style', 'Comfort', 'Safety', 'Affordability', 'Convenience', 'Reliability'],
-    loop: 0, // Infinite loop
-    typeSpeed: 100,
-    deleteSpeed: 50,
-    delaySpeed: 1000,
-  });
-
 
 
 
@@ -164,13 +169,21 @@ const Home = () => {
         />
 
         <img src={logo} alt="Logo" className="absolute border-4 border-rose-400 top-4 left-4 w-12 rounded-3xl" />
-        <p style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-28 transform -translate-x-1/2 text-6xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
-         <span className='block mb-32 mt-8 font-mono text-green-400 '>PrimeRide</span> Ride With Us Ride With Comfort
+
+
+        
+        <p style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-36 transform -translate-x-1/2 text-6xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
+          Ride With Us Ride With Comfort
         </p>
       </div>
 
       {/* Heading Content Section */}
-      <div  className="w-full bg-slate-900 pt-8">
+      <div 
+  className="w-full bg-contain bg-center pt-8" 
+  style={{ 
+    backgroundImage: `url(${taxi})`, 
+  }}
+>
         <div className='flex justify-center items-center gap-5 mb-6'>
           <h1 className="text-6xl font-bold text-pretty mb-4 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent ml-6"
             style={{ WebkitTextStroke: "3px black" }}
@@ -182,76 +195,82 @@ const Home = () => {
        
 
         {/* Form Section */}
-        <form className="max-w-lg mx-auto bg-black p-6 rounded-lg shadow-md mb-8  border-white border-2 duration-300"
-        onSubmit={(e) => 
-          
-          submithandler(e)
+        <form
+  className="max-w-lg mx-auto bg-black p-6 rounded-lg shadow-md mb-8 border-white border-2 duration-300"
+  onSubmit={submithandler}
+>
+  <div className="mb-5">
+    <label
+      htmlFor="pickup"
+      className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white"
+    >
+      Pickup Location
+    </label>
+    <input
+      type="text"
+      id="pickup"
+      value={pickup}
+      onChange={(e) => setpickup(e.target.value)}
+      onClick={panelOpen}
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Enter pickup location"
+      required
+    />
+  </div>
 
-        }
+  <div className="mb-5">
+    <label
+      htmlFor="dropoff"
+      className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white"
+    >
+      Dropoff Location
+    </label>
+    <input
+      type="text"
+      id="dropoff"
+      value={dropoff}
+      onChange={(e) => setdropoff(e.target.value)}
+      onClick={panelOpen}
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Enter dropoff location"
+      required
+    />
+  </div>
 
-        >
-          <div className="mb-5">
-            <label htmlFor="pickup" className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white">Pickup Location</label>
-            <input type="text" id="pickup" value={pickup} onChange={(e)=>{
-              
-              setpickup(e.target.value)
-            }
-          } 
-           onClick={panelOpen}    
-              
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter pickup location" required />
-          </div>
-
-
-          <div className="mb-5">
-            <label htmlFor="dropoff" className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white">Dropoff Location</label>
-            <input type="text" id="dropoff" value={dropoff} onChange={(e)=>{
-              setdropoff(e.target.value)
-            }}
-            
-            onClick={panelOpen}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter dropoff location" required />
-          </div>
-
-
-
-
-          <div className='w-full h-auto p-3 duration-300' id='locationpanel'>
+  <div className='w-full h-auto p-3 duration-300' id='locationpanel'>
               {rides.map((ride) => (
-                <div key={ride.type} className="mb-4 cursor-pointer flex items-center justify-center" onClick={() => handleRideClick(ride)}>
+                <div key={ride.type} className="mb-4 cursor-pointer flex items-center  justify-center" onClick={() => handleRideClick(ride)}>
                   <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-light'>{ride.type} Details</h2>
                   <img className='w-8 h-6 border-2 border-green-400 rounded-3xl ml-2' src={ride.image} alt={ride.type} />
                   <p className='text-lg bg-white pr-3 w-1/2 ml-5 text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: {ride.expense}</p>
                 </div>
               ))}
             </div>
+            
+  <button
+    type="submit"
+    style={{ WebkitTextStroke: "1px black" }}
+    className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300 font-bold border-2 border-white rounded-lg text-2xl w-full px-5 py-2.5 text-center"
+  >
+    Submit
+  </button>
+</form>
 
 
-
-          <button type="submit"    style={{ WebkitTextStroke: "1px black" }} className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300  font-bold border-2 border-white rounded-lg text-2xl w-full px-5 py-2.5 text-center ">Submit</button>
-       
-        </form>
-
-
-
-     
-
-
-       
 
 
 {/* Ride Price Section */}
 <div className={`w-full h-auto p-3 duration-300 ${!showLocationPanel ? 'opacity-100' : 'opacity-0'} transition-opacity`} id='rideprice'>
           {!showLocationPanel && selectedRide && (
             <div id='rideprice' className='w-full h-auto p-3 duration-300 flex flex-col items-center'>
-              <div className="mt-4 p-4 border-2 border-white bg-black flex flex-col text-white rounded-lg shadow-lg w-full max-w-md">
+              <div className="mt-4 p-4 border-2 border-white bg-black flex flex-col gap-5 text-white rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold text-center">{selectedRide.type} Details</h2>
                 <img className='w-full h-auto border-2 border-green-400 rounded-3xl mx-auto my-4' src={selectedRide.image} alt={selectedRide.type} />
                 <p className="mt-2 text-center">{selectedRide.details}</p>
                 <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">Travel Expense: <span className='text-white'>{selectedRide.expense}</span> </p>
                 <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">From : <span className='text-white'>{pickup}</span> </p>
                 <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">To : <span className='text-white'>{dropoff}</span> </p>
-              <Link className="mt-4 border-2 text-center border-white bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white px-4 py-2 rounded-lg hover:opacity-80 duration-300" onClick={() => handleLocationClick(selectedRide)}>  <button  >
+              <Link to={'/Waiting'} className="mt-4 border-2 text-center border-white bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white px-4 py-2 rounded-lg hover:opacity-80 duration-300" onClick={() => handleLocationClick(selectedRide)}>  <button onClick={rideconfirm} >
                   Confirm Ride
                 </button>
                 </Link>
@@ -262,18 +281,19 @@ const Home = () => {
 
 
 
-
-
+    
 
         {/* Additional Content to Enable Scrolling */}
-        <div  className="text-lg   p-6  text-white bg-black w-full border-t-4 border-b-2 border-black" >
-          <p className='font-bold text-center text-2xl  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>
+        <div  className="text-lg   p-6 flex flex-col gap-5  text-white bg-black w-full border-t-4 border-b-2 border-black" >
+          <p className='font-normal  text-center text-5xl  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>
             Primeride Taxi App
           </p>
           <br />
-          <p className='mb-2 font-light'>
-            Primeride is a convenient taxi-hailing service that connects passengers with nearby drivers. With Primeride, you can easily request a ride using your smartphone, track the driver's location in real-time, and receive updates on their estimated arrival time. You can also view your ride history, save favorite pickup and drop-off locations, and even pay for your fares through the app. Whether you're heading to work, school, or just out for a night on the town, Primeride makes it easy to get where you need to go with a tap of your screen.
-          </p>
+          
+           <span className='mb-2 font-light  text-xl'>Primeride is a convenient taxi-hailing service that connects passengers with nearby drivers.</span> 
+           <span className='mb-2 font-light  text-xl'> With Primeride, you can easily request a ride using your smartphone, track the driver's location in real-time, and receive updates on their estimated arrival time. </span> 
+     <span className='mb-2 font-light  text-xl'>You can also view your ride history, save favorite pickup and drop-off locations, and even pay for your fares through the app. Whether you're heading to work, school, or just out for a night on the town, Primeride makes it easy to get where you need to go with a tap of your screen.</span>
+          
           <br />
           <br />
           <br />

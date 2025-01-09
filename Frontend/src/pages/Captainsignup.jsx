@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setemail, setpassword, setfullname, setcaptain, reset, setvehcile } from '../Features/captainSlice';
 import axios from 'axios';
 import {useTypewriter,Cursor} from 'react-simple-typewriter'
-
+import taxi from '../assets/taxi.png'
 const Captainsignup = () => {
   const dispatch = useDispatch();
   const [email, setEmailState] = useState('');
@@ -76,7 +76,10 @@ const [navpara] = useTypewriter({
   };
 
   return (
-<div className='bg-cover bg-center p-10 bg-black'>
+<div className='bg-cover border-4 border-black w-full bg-center p-10 bg-black'
+ style={{ 
+      backgroundImage: `url(${taxi})`, 
+    }}>
   <div className='text-white w-full h-screen flex justify-center items-center p-4'>
     <p className='bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-light duration-300 text-4xl w-3/4 sm:w-1/2 mr-10 hidden sm:block'>
        A CAPTAIN LEADS THE <span className='text-white font-normal'>{navpara}</span>

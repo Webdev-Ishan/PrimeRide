@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom'
-import background from '../assets/Usersignupbackground.jpg'
 import { useState } from 'react';
 import {useDispatch} from 'react-redux'
 import {setemail, setpassword,setfullname ,setuser,reset} from '../Features/userSlice'
