@@ -1,14 +1,13 @@
 import React from 'react';
 import logo from '../assets/Ride.png';
 import bg from '../assets/Homebg.webm';
-import { useState} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import logo2 from '../assets/Homelogo.jpg';
 import home2 from '../assets/Home2.jpg';
-import Locationpanel from '../components/LocationPanel'
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import {useTypewriter,Cursor} from 'react-simple-typewriter'
 import taxi from '../assets/taxi.png'
-import { gsap } from "gsap";
+import { gsap } from 'gsap';
 
 
 const Home = () => {
@@ -18,6 +17,11 @@ const Home = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showLocationPanel, setShowLocationPanel] = useState(true);
   const [selectedRide, setSelectedRide] = useState(null);
+  const [showForm, setShowForm] = useState(true);
+  const [showConfirmRidePanel, setShowConfirmRidePanel] = useState(false);
+  const [showFindingRider, setShowFindingRider] = useState(false);
+
+const navigate= useNavigate();
 
   const navparaMessages = [
     "Ensure a safe and secure ride with our trusted drivers and advanced tracking system.",
@@ -34,7 +38,7 @@ const Home = () => {
     delaySpeed: 500, // Shorter delay between words
   });
 
-  const [location, setlocation] = useState('');
+  
 
   const [typeeffect] = useTypewriter({
     words: ['Trends', 'Comfort', 'Trust', 'Dreams', 'Convenience', 'Amusement'],
@@ -44,51 +48,24 @@ const Home = () => {
     delaySpeed: 400,
   });
 
-  // const selectedlocation = (location) => {
-  //   setlocation(location);
-  //   setShowLocationPanel(false);
-  // };
+
+
 
   const submithandler = (e) => {
     e.preventDefault();
-    setShowLocationPanel(false);
-    setSelectedRide(rides[0]);
-    // Handle form submission
-     // Select the panel element
-  const panel = document.getElementById("rideprice");
-
-  // Animate the panel appearance
-  gsap.fromTo(
-    panel,
-    { opacity: 0, y: -50 }, // Starting state
-    { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" } // Ending state
-  );
-
+    setShowForm(false);  // Hide form after submission
+    setShowConfirmRidePanel(true); // Show confirm ride panel
   };
 
-  const panelOpen = () => {
-    setShowLocationPanel(!showLocationPanel);
+  const handleRideConfirm = () => {
+    setShowConfirmRidePanel(false); // Hide confirm ride panel
+    setShowFindingRider(true); // Show finding rider panel
+
+    setTimeout(() => {
+      navigate('/Rider')
+    }, 5000);
+  
   };
-
-  const rideconfirm=()=>{
-    setshowwaiting(false);
-    
-  }
-
-  const handleLocationClick = (location) => {
-    setSelectedLocation(location);
-  };
-
-
-  const handleBackToLocations = () => {
-    setSelectedLocation(null);
-    setShowLocationPanel(true);
-  };
-
-  const handleRideClick = (ride) => {
-    setSelectedRide(ride);
-  };
-
 
 
 
@@ -184,7 +161,7 @@ const Home = () => {
     backgroundImage: `url(${taxi})`, 
   }}
 >
-        <div className='flex justify-center items-center gap-5 mb-6'>
+        <div className='flex justify-center relative w-full h-auto p-3  items-center gap-5 mb-6'>
           <h1 className="text-6xl font-bold text-pretty mb-4 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent ml-6"
             style={{ WebkitTextStroke: "3px black" }}
           >
@@ -193,98 +170,114 @@ const Home = () => {
           <img src={logo2} alt="" className='w-16 h-12 rounded-3xl border-4 border-black m-3 hover:border-green-500 duration-300' />
         </div>
        
-
-        {/* Form Section */}
-        <form
-  className="max-w-lg mx-auto bg-black p-6 rounded-lg shadow-md mb-8 border-white border-2 duration-300"
-  onSubmit={submithandler}
->
-  <div className="mb-5">
-    <label
-      htmlFor="pickup"
-      className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white"
-    >
-      Pickup Location
-    </label>
-    <input
-      type="text"
-      id="pickup"
-      value={pickup}
-      onChange={(e) => setpickup(e.target.value)}
-      onClick={panelOpen}
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      placeholder="Enter pickup location"
-      required
-    />
-  </div>
-
-  <div className="mb-5">
-    <label
-      htmlFor="dropoff"
-      className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white"
-    >
-      Dropoff Location
-    </label>
-    <input
-      type="text"
-      id="dropoff"
-      value={dropoff}
-      onChange={(e) => setdropoff(e.target.value)}
-      onClick={panelOpen}
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      placeholder="Enter dropoff location"
-      required
-    />
-  </div>
-
-  <div className='w-full h-auto p-3 duration-300' id='locationpanel'>
-              {rides.map((ride) => (
-                <div key={ride.type} className="mb-4 cursor-pointer flex items-center  justify-center" onClick={() => handleRideClick(ride)}>
-                  <h2 className='text-2xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-light'>{ride.type} Details</h2>
-                  <img className='w-8 h-6 border-2 border-green-400 rounded-3xl ml-2' src={ride.image} alt={ride.type} />
-                  <p className='text-lg bg-white pr-3 w-1/2 ml-5 text-black rounded-xl text-center pl-3 m-2 hover:bg-pink-200 duration-300'>Travel Expense: {ride.expense}</p>
-                </div>
-              ))}
-            </div>
-            
-  <button
-    type="submit"
-    style={{ WebkitTextStroke: "1px black" }}
-    className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300 font-bold border-2 border-white rounded-lg text-2xl w-full px-5 py-2.5 text-center"
+      
+        <div className="relative">
+  {/* Form Section */}
+  <form
+    className={`w-full max-w-lg mx-auto bg-black p-6 rounded-lg shadow-md mb-8 border-white border-2 duration-300 transition-all ${showForm ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+    onSubmit={submithandler}
   >
-    Submit
-  </button>
-</form>
+    <div className="mb-5">
+      <label
+        htmlFor="pickup"
+        className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white"
+      >
+        Pickup Location
+      </label>
+      <input
+        type="text"
+        id="pickup"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Enter pickup location"
+        required
+        value={pickup}
+        onChange={(e) => setpickup(e.target.value)}
+      />
+    </div>
 
+    <div className="mb-5">
+      <label
+        htmlFor="dropoff"
+        className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white"
+      >
+        Dropoff Location
+      </label>
+      <input
+        type="text"
+        id="dropoff"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Enter dropoff location"
+        required
+        value={dropoff}
+        onChange={(e) => setdropoff(e.target.value)}
+      />
+    </div>
 
+    <button
+      type="submit"
+      className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300 font-bold border-2 border-white rounded-lg text-2xl w-full px-5 py-2.5 text-center"
+    >
+      Submit
+    </button>
+  </form>
 
-
-{/* Ride Price Section */}
-<div className={`w-full h-auto p-3 duration-300 ${!showLocationPanel ? 'opacity-100' : 'opacity-0'} transition-opacity`} id='rideprice'>
-          {!showLocationPanel && selectedRide && (
-            <div id='rideprice' className='w-full h-auto p-3 duration-300 flex flex-col items-center'>
-              <div className="mt-4 p-4 border-2 border-white bg-black flex flex-col gap-5 text-white rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold text-center">{selectedRide.type} Details</h2>
-                <img className='w-full h-auto border-2 border-green-400 rounded-3xl mx-auto my-4' src={selectedRide.image} alt={selectedRide.type} />
-                <p className="mt-2 text-center">{selectedRide.details}</p>
-                <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">Travel Expense: <span className='text-white'>{selectedRide.expense}</span> </p>
-                <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">From : <span className='text-white'>{pickup}</span> </p>
-                <p className="mt-2 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">To : <span className='text-white'>{dropoff}</span> </p>
-              <Link to={'/Waiting'} className="mt-4 border-2 text-center border-white bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white px-4 py-2 rounded-lg hover:opacity-80 duration-300" onClick={() => handleLocationClick(selectedRide)}>  <button onClick={rideconfirm} >
-                  Confirm Ride
-                </button>
-                </Link>
-              </div>
-            </div>
-          )}
+  {/* Ride Price Section */}
+  <div
+    className={`w-full h-auto p-3 duration-300 transition-all ${showConfirmRidePanel ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+  >
+    {showConfirmRidePanel && (
+      <div className="w-full h-auto p-3 flex flex-col items-center">
+        <div className="mt-4 p-4 border-2 border-white bg-black flex flex-col gap-5 text-white rounded-lg shadow-lg w-full max-w-md">
+          <h2 className="text-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold text-center">
+            Ride Details
+          </h2>
+          <img className="w-auto h-auto border-2 border-green-500 rounded-xl" src="https://img.freepik.com/free-vector/man-with-camera-take-photo-driver-car_107791-8883.jpg?ga=GA1.1.677472336.1735643290&semt=ais_hybrid" alt="" />
+          <p className="mt-2 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">Travel Expense: <span className='text-white'>$50</span></p>
+          <p className="mt-2 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">From: <span className='text-white'>{pickup}</span></p>
+          <p className="mt-2 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">To: <span className='text-white'>{dropoff}</span></p>
+          <button
+            className="mt-4 border-2 text-center border-white bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white px-4 py-2 rounded-lg hover:opacity-80 duration-300"
+            onClick={handleRideConfirm}
+          >
+            Confirm Ride
+          </button>
         </div>
+      </div>
+    )}
+  </div>
 
+  {/* Finding Rider Section */}
+  <div
+    className={`w-full h-auto p-3 flex flex-col items-center justify-center duration-300 transition-all ${showFindingRider ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+  >
+    {showFindingRider && (
+      <div className="mt-4 p-4 flex flex-col gap-2 border-2 border-white bg-black text-white rounded-lg shadow-lg w-full max-w-md text-center">
+        <img className="w-auto h-auto rounded-xl border-2 border-blue-600" src="https://img.freepik.com/free-vector/people-with-selected-folder-icon_53876-26651.jpg?ga=GA1.1.677472336.1735643290&semt=ais_hybrid" alt="" />
+       
+       
+        
+<div class="flex-col gap-4 w-full flex items-center justify-center">
+  <div class="w-16 h-16 border-8 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-pink-700 rounded-full">
+   
+  </div>
+</div>
+       
+        <h2 className="text-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold">
+          Finding the Rider
+        </h2>
+        <p className="mt-2 text-center">Please wait while we connect you with the nearest rider.</p>
+      </div>
+    )}
+  </div>
+
+
+</div>
 
 
     
 
         {/* Additional Content to Enable Scrolling */}
-        <div  className="text-lg   p-6 flex flex-col gap-5  text-white bg-black w-full border-t-4 border-b-2 border-black" >
+        <div  className="text-lg mt-16  p-6 flex flex-col gap-5  text-white bg-black w-full border-t-4 border-b-2 border-black" >
           <p className='font-normal  text-center text-5xl  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>
             Primeride Taxi App
           </p>
@@ -349,7 +342,7 @@ const Home = () => {
           
 </div>
       
-        
+ 
       </div>
     </div>
   );
