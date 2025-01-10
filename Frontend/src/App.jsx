@@ -13,6 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ProtectedRoute2 from './components/ProtectedRoute2'
 import AnimatedCursor from './AnimatedCursor';
 import RiderDetails from './components/RiderDetails'
+import Ridegoing from './components/Ridegoing'
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path='/Captainlogin' element={<Captainlogin/>}/>
         <Route path='/Captainsignup' element={<Captainsignup/>} />
         <Route path='/Rider' element={<RiderDetails/>} />
+        <Route path='/Getgoing' element={<Ridegoing/>} />
         <Route path='/Home' element={
          < ProtectedRoute>
           <Home/>

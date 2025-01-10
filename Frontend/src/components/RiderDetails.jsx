@@ -55,7 +55,7 @@ function RiderDetails() {
             </svg>
           </Link>
           <Link
-            to={''}
+            to={'/Getgoing'}
             className="py-3 px-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border bg-white text-gray-800 hover:bg-gray-100 focus:outline-none"
           >
             Continue
