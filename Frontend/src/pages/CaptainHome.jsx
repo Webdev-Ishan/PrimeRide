@@ -105,18 +105,22 @@ const navigate= useNavigate();
 
       {/* Heading Content Section */}
       <div 
-  className="w-full bg-contain bg-center pt-8" 
-  style={{ 
-     backgroundImage: `url(${logo2})`, 
-   }}
+  className="w-full bg-pink-100 bg-contain bg-center " 
+ 
 >
         
+        {/*  Text Effect section */}
+        <div style={{ WebkitTextStroke: "2px black" }} className='w-full h-auto overflow-x-hidden'>
+
+<h1 className='text-black font-bold text-[250px] w-full h-full'>PRIMERIDETAXIS</h1>
+
+        </div>
        
       
         
 
         {/* Additional Content to Enable Scrolling */}
-        <div  className="text-lg mt-16  p-6 flex flex-col gap-5  text-white bg-black w-full border-t-4 border-b-2 border-black" >
+        <div  className="text-lg   p-6 flex flex-col gap-5  text-white bg-black w-full border-t-4 border-b-2 border-black" >
           <p className='font-normal  text-center text-5xl  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>
             Primeride Taxi App
           </p>
@@ -166,8 +170,24 @@ const navigate= useNavigate();
 
 
 
+{/*  Text Effect section */}
+<div style={{ WebkitTextStroke: "2px black" }} className='w-full h-auto overflow-x-hidden'>
+
+<h1 className='text-white font-bold border-t-2 border-t-white text-[250px] bg-black w-full h-full'>PREMIUMRIDES</h1>
+
+        </div>
+
 
         <img src={home2} alt="" className='w-full h-full  ' />
+
+
+
+{/*  Text Effect section */}
+<div style={{ WebkitTextStroke: "2px black" }} className='w-full h-auto overflow-x-hidden'>
+
+<h1 className='text-white font-bold border-t-2 border-t-white text-[230px] bg-pink-600 w-full h-full'>USERCENTRIC</h1>
+
+        </div>
 
 <div className="text-lg h-full pt-12 flex flex-col gap-10 items-center p-6 text-white bg-black w-full  ">
 <h2 className="text-4xl font-light mb-4 text-center  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">Privacy Policy</h2>
