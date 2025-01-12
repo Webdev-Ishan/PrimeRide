@@ -185,7 +185,7 @@ const navigate= useNavigate();
 {/*  Text Effect section */}
 <div style={{ WebkitTextStroke: "2px black" }} className='w-full h-auto overflow-x-hidden'>
 
-<h1 className='text-white font-bold border-t-2 border-t-white text-[230px] bg-pink-600 w-full h-full'>USERCENTRIC</h1>
+<h1 className='text-white font-bold border-t-2 border-t-white text-[250px] bg-pink-600 w-full h-full'>USERCENTRIC</h1>
 
         </div>
 

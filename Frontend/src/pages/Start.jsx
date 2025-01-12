@@ -26,7 +26,7 @@ const Start = () => {
         </div>
 
         <div className='text-white bg-gradient-to-r from-rose-500 to-fuchsia-600 border-4 border-black py-4 px-4 pb-5'>
-          <h2 className='text-black text-2xl font-bold'>Get going with PrimeRide</h2>
+          <h2 className='text-black text-2xl font-bold'>Sart the Journey..</h2>
           <Link to={'/Userlogin'} className='w-full flex font-light items-center justify-center bg-black text-white text-3xl py-3 rounded-lg mt-5  hover:text-pink-600  duration-300 '>
           
           <img className='w-8 h-8 rounded-3xl border-2 border-yellow-400  mr-4' src={start} alt="loading.." /> Continue The Ride . . . .</Link>
