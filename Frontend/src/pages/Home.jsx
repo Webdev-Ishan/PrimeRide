@@ -149,129 +149,25 @@ const navigate= useNavigate();
 
 
         
-        <p style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-36 transform -translate-x-1/2 text-6xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
+        <p style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-36 transform -translate-x-1/2 text-7xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
           Ride With Us Ride With Comfort
         </p>
       </div>
 
       {/* Heading Content Section */}
       <div 
-  className="w-full bg-contain bg-center pt-8" 
-  style={{ 
-    backgroundImage: `url(${taxi})`, 
-  }}
+  className="w-full bg-contain bg-center bg-black " 
+  
 >
-        <div className='flex justify-center relative w-full h-auto p-3  items-center gap-5 mb-6'>
-          <h1 className="text-6xl font-bold text-pretty mb-4 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent ml-6"
-            style={{ WebkitTextStroke: "3px black" }}
-          >
-            Find A Ride
-          </h1>
-          <img src={logo2} alt="" className='w-16 h-12 rounded-3xl border-4 border-black m-3 hover:border-green-500 duration-300' />
+            {/*  Text Effect section */}
+            <div style={{ WebkitTextStroke: "2px black" }} className='w-full border-b-2 border-t-2 border-white h-auto overflow-x-hidden'>
+
+<h1 className='text-white font-bold text-[250px] w-full h-full'>PRIMERIDETAXIS</h1>
+
         </div>
        
-      
-        <div className="relative">
-  {/* Form Section */}
-  <form
-    className={`w-full max-w-lg mx-auto bg-black p-6 rounded-lg shadow-md mb-8 border-white border-2 duration-300 transition-all ${showForm ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-    onSubmit={submithandler}
-  >
-    <div className="mb-5">
-      <label
-        htmlFor="pickup"
-        className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white"
-      >
-        Pickup Location
-      </label>
-      <input
-        type="text"
-        id="pickup"
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Enter pickup location"
-        required
-        value={pickup}
-        onChange={(e) => setpickup(e.target.value)}
-      />
-    </div>
-
-    <div className="mb-5">
-      <label
-        htmlFor="dropoff"
-        className="block mb-4 text-2xl font-medium text-gray-900 dark:text-white"
-      >
-        Dropoff Location
-      </label>
-      <input
-        type="text"
-        id="dropoff"
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Enter dropoff location"
-        required
-        value={dropoff}
-        onChange={(e) => setdropoff(e.target.value)}
-      />
-    </div>
-
-    <button
-      type="submit"
-      className="text-white bg-gradient-to-r from-rose-500 to-fuchsia-400 hover:opacity-80 duration-300 font-bold border-2 border-white rounded-lg text-2xl w-full px-5 py-2.5 text-center"
-    >
-      Submit
-    </button>
-  </form>
-
-  {/* Ride Price Section */}
-  <div
-    className={`w-full h-auto p-3 duration-300 transition-all ${showConfirmRidePanel ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-  >
-    {showConfirmRidePanel && (
-      <div className="w-full h-auto p-3 flex flex-col items-center">
-        <div className="mt-4 p-4 border-2 border-white bg-black flex flex-col gap-5 text-white rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold text-center">
-            Ride Details
-          </h2>
-          <img className="w-auto h-auto border-2 border-green-500 rounded-xl" src="https://img.freepik.com/free-vector/man-with-camera-take-photo-driver-car_107791-8883.jpg?ga=GA1.1.677472336.1735643290&semt=ais_hybrid" alt="" />
-          <p className="mt-2 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">Travel Expense: <span className='text-white'>$50</span></p>
-          <p className="mt-2 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">From: <span className='text-white'>{pickup}</span></p>
-          <p className="mt-2 text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent">To: <span className='text-white'>{dropoff}</span></p>
-          <button
-            className="mt-4 border-2 text-center border-white bg-gradient-to-r from-rose-500 to-fuchsia-400 text-white px-4 py-2 rounded-lg hover:opacity-80 duration-300"
-            onClick={handleRideConfirm}
-          >
-            Confirm Ride
-          </button>
-        </div>
-      </div>
-    )}
-  </div>
-
-  {/* Finding Rider Section */}
-  <div
-    className={`w-full h-auto p-3 flex flex-col items-center justify-center duration-300 transition-all ${showFindingRider ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-  >
-    {showFindingRider && (
-      <div className="mt-4 p-4 flex flex-col gap-2 border-2 border-white bg-black text-white rounded-lg shadow-lg w-full max-w-md text-center">
-        <img className="w-auto h-auto rounded-xl border-2 border-blue-600" src="https://img.freepik.com/free-vector/people-with-selected-folder-icon_53876-26651.jpg?ga=GA1.1.677472336.1735643290&semt=ais_hybrid" alt="" />
-       
-       
-        
-<div class="flex-col gap-4 w-full flex items-center justify-center">
-  <div class="w-16 h-16 border-8 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-pink-700 rounded-full">
    
-  </div>
-</div>
-       
-        <h2 className="text-3xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold">
-          Finding the Rider
-        </h2>
-        <p className="mt-2 text-center">Please wait while we connect you with the nearest rider.</p>
-      </div>
-    )}
-  </div>
 
-
-</div>
 
 
     
@@ -320,13 +216,18 @@ const navigate= useNavigate();
   
 <p className='mb-16 text-2xl font-light'> Enjoy affordable and transparent pricing with no hidden charges.</p>
 
-<p className='mb-16 text-2xl font-light'>Get where you need to go with a tap of your screen.</p>
+<p className=' text-2xl font-light'>Get where you need to go with a tap of your screen.</p>
 
 
 </div>
 
 
+ {/*  Text Effect section */}
+ <div style={{ WebkitTextStroke: "2px black" }} className='w-full border-t-2 border-b-2 border-white h-auto overflow-x-hidden'>
 
+<h1 className='bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-bold text-[250px] w-full h-full'>CONVENIENCE</h1>
+
+        </div>
 
         <img src={home2} alt="" className='w-full h-full  ' />
 
@@ -342,6 +243,9 @@ const navigate= useNavigate();
           
 </div>
       
+
+
+
  
       </div>
     </div>
