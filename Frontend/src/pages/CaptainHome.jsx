@@ -1,16 +1,71 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import logo from '../assets/Ride.png';
 import bg from '../assets/Ride.mp4';
 import logo2 from '../assets/Homelogo.jpg';
 import home2 from '../assets/Home2.jpg';
 import { Link,useNavigate } from 'react-router-dom';
 import {useTypewriter,Cursor} from 'react-simple-typewriter'
+import gsap from 'gsap'
+import {useGSAP} from '@gsap/react'
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 
-const Home = () => {
+gsap.registerPlugin(ScrollTrigger);
+const CaptainHome = () => {
+
+  const handleMouseEnter = () => {
+    gsap.to(".scrolleffect", {
+      transform: "translateX(-100%)",
+      duration: 3,
+      
+
+    });
+  };
 
 
-const navigate= useNavigate();
+ const handleMouseLeave = () => {
+  gsap.to(".scrolleffect", {
+    transform: "translateX(0)",
+    duration: 3,
+  });
+};
+
+
+
+useGSAP(()=>{
+  gsap.from(".heading",{
+    opacity:0,
+    duration:2,
+    delay:1,
+    rotate:360,
+    scale:1
+  })
+  
+  
+  },[])
+
+
+
+  const handleappname= ()=>{
+
+    gsap.from(".appname p",{
+      x:1000,
+      duration:0.5,
+      delay:0.5,
+      rotate:360,
+    })
+  }
+  
+  
+  const handleappname2= ()=>{
+  
+    gsap.from(".appname h1",{
+      x:1000,
+      duration:0.5,
+      delay:0.5,
+      rotate:360,
+    })
+  }
 
   const navparaMessages = [
     "Ensure a safe and secure ride with our trusted drivers and advanced tracking system.",
@@ -98,29 +153,96 @@ const navigate= useNavigate();
 
 
         
-        <p style={{ WebkitTextStroke: "2px black" }} className="absolute bottom-10 left-1/2 mb-36 transform -translate-x-1/2 text-6xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
+        <p style={{ WebkitTextStroke: "2px black" }} className=" heading absolute bottom-10 left-1/2 mb-36 transform -translate-x-1/2 text-6xl bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent text-center drop-shadow-lg font-bold">
           Lead The Way Become A Captain
         </p>
       </div>
 
       {/* Heading Content Section */}
       <div 
-  className="w-full bg-pink-100 bg-contain bg-center " 
+  className="parent w-full bg-pink-100 overflow-x-hidden  " 
  
 >
-        
         {/*  Text Effect section */}
-        <div style={{ WebkitTextStroke: "2px black" }} className='w-full h-auto overflow-x-hidden'>
+        <div style={{ WebkitTextStroke: "2px black" }} onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}  className=' scrolleffect w-full h-auto'>
 
-<h1 className='text-black font-bold text-[250px] w-full h-full'>PRIMERIDETAXIS</h1>
+<h1 className='text-black scroll font-bold text-[250px] w-full  h-full'>PRIMERIDETAXIS</h1>
 
         </div>
        
-      
+
+           
+   <div className='w-full h-auto bg-black text-white border-b-2 border-white p-10'>
+
+<form>
+<div className="relative mb-6">
+<label className="flex items-center mb-2 text-white text-sm font-medium">
+  Username
+  <svg
+    width="7"
+    height="7"
+    className="ml-1"
+    viewBox="0 0 7 7"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+      fill="#EF4444"
+    />
+  </svg>
+</label>
+<input
+  type="text"
+  id="username"
+  className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+  placeholder=""
+  required
+/>
+</div>
+
+<div className="relative mb-6">
+<label className="flex items-center mb-2 text-white text-sm font-medium">
+  Password
+  <svg
+    width="7"
+    height="7"
+    className="ml-1"
+    viewBox="0 0 7 7"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+      fill="#EF4444"
+    />
+  </svg>
+</label>
+<input
+  type="password"
+  id="password"
+  className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+  placeholder=""
+  required
+/>
+
+
+</div>
+
+<button
+type="submit"
+className="w-52 h-12 bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 rounded-full shadow-xs text-white text-base font-semibold leading-6 mb-6"
+>
+Sign in
+</button>
+</form>
+
+</div>
         
 
         {/* Additional Content to Enable Scrolling */}
-        <div  className="text-lg   p-6 flex flex-col gap-5  text-white bg-black w-full border-t-4 border-b-2 border-black" >
+        <div onMouseEnter={handleappname} className="text-lg appname  p-6 flex flex-col gap-5  text-white bg-black w-full border-t-4 border-b-2 border-black" >
           <p className='font-normal  text-center text-5xl  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>
             Primeride Taxi App
           </p>
@@ -150,7 +272,7 @@ const navigate= useNavigate();
 
 
 
-<div className='w-full  flex justify-center flex-col items-center bg-black  p-12 text-white'>
+<div onMouseEnter={handleappname2} className='w-full appname  flex justify-center flex-col items-center bg-black  p-12 text-white'>
 
 <h1 className='text-5xl font-semibold  mb-20 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>Why Choose PrimeRide?</h1>
 
@@ -171,9 +293,10 @@ const navigate= useNavigate();
 
 
 {/*  Text Effect section */}
-<div style={{ WebkitTextStroke: "2px black" }} className='w-full h-auto overflow-x-hidden'>
+<div style={{ WebkitTextStroke: "2px black" }} onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave} className='scrolleffect w-full h-auto '>
 
-<h1 className='text-white font-bold border-t-2 border-t-white text-[250px] bg-black w-full h-full'>PREMIUMRIDES</h1>
+<h1 className='text-white scroll font-bold border-t-2 border-t-white text-[250px] bg-black w-full h-full'>PREMIUMRIDES</h1>
 
         </div>
 
@@ -183,9 +306,10 @@ const navigate= useNavigate();
 
 
 {/*  Text Effect section */}
-<div style={{ WebkitTextStroke: "2px black" }} className='w-full h-auto overflow-x-hidden'>
+<div style={{ WebkitTextStroke: "2px black" }} onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave} className='scrolleffect w-full h-auto '>
 
-<h1 className='text-white font-bold border-t-2 border-t-white text-[250px] bg-pink-600 w-full h-full'>USERCENTRIC</h1>
+<h1 className='text-white scroll font-bold border-t-2 border-t-white text-[250px] bg-pink-600 w-full h-full'>USERCENTRIC</h1>
 
         </div>
 
@@ -207,5 +331,5 @@ const navigate= useNavigate();
   );
 };
 
-export default Home;
+export default CaptainHome;
 
