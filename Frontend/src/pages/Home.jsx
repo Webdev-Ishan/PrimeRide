@@ -15,6 +15,8 @@ const Home = () => {
 
   const [pickup, setpickup] = useState('');
   const [dropoff, setdropoff] = useState('');
+  const [panelopen, setpanelopen]= useState(false);
+  const panelref =useRef(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showLocationPanel, setShowLocationPanel] = useState(true);
   const [selectedRide, setSelectedRide] = useState(null);
@@ -22,7 +24,7 @@ const Home = () => {
   const [showConfirmRidePanel, setShowConfirmRidePanel] = useState(false);
   const [showFindingRider, setShowFindingRider] = useState(false);
 
-const navigate= useNavigate();
+
 
   const navparaMessages = [
     "Ensure a safe and secure ride with our trusted drivers and advanced tracking system.",
@@ -41,13 +43,6 @@ const navigate= useNavigate();
 
   
 
-  const [typeeffect] = useTypewriter({
-    words: ['Trends', 'Comfort', 'Trust', 'Dreams', 'Convenience', 'Amusement'],
-    loop: 0, // Infinite loop
-    typeSpeed: 100,
-    deleteSpeed: 50,
-    delaySpeed: 400,
-  });
 
 
 
@@ -86,11 +81,11 @@ gsap.from(".heading",{
 
 const handleappname= ()=>{
 
-  gsap.from(".appname .hp",{
-    x:1000,
+  gsap.to(".appname .hp",{
+    opacity:1,
     duration:0.5,
     delay:0.5,
-    rotate:360,
+    
   })
 }
 
@@ -128,6 +123,20 @@ const handleappname2= ()=>{
 
 
 
+  const submithandeler= (e)=>{
+    e.preventDefault()
+  }
+
+  useGSAP(function(){
+if(panelopen){
+  
+  gsap.to(panelref.current,{
+    height:'70%',
+
+   })
+}
+
+  },[panelopen])
 
   return (
     <div className="w-full h-screen overflow-y-auto overflow-x-hidden">
@@ -203,12 +212,14 @@ const handleappname2= ()=>{
 
         </div>
        
-   <div className='w-full h-auto bg-black text-white border-b-2 border-white p-10'>
+   <div className='w-full h-auto bg-black flex flex-col  justify-center  text-white border-b-2 border-white p-10'>
 
+
+         <h1 className='text-6xl text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-mono'>Find A Ride</h1>
         <form>
       <div className="relative mb-6">
         <label className="flex items-center mb-2 text-white text-sm font-medium">
-          Username
+          PickUp Location
           <svg
             width="7"
             height="7"
@@ -225,16 +236,23 @@ const handleappname2= ()=>{
         </label>
         <input
           type="text"
-          id="username"
+          id="pickup"
+          value={pickup}
+          onClick={()=>{
+            setpanelopen(!panelopen)
+          }}
+          onChange={(e)=>{
+            setpickup(e.target.value)
+          }}
           className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
-          placeholder=""
+          placeholder="Enter the PickUp Location"
           required
         />
       </div>
 
       <div className="relative mb-6">
         <label className="flex items-center mb-2 text-white text-sm font-medium">
-          Password
+          DropOff Location
           <svg
             width="7"
             height="7"
@@ -250,10 +268,17 @@ const handleappname2= ()=>{
           </svg>
         </label>
         <input
-          type="password"
-          id="password"
+          type="text"
+          id="dropoff"
+          onClick={()=>{
+            setpanelopen(!panelopen)
+          }}
+          value={dropoff}
+          onChange={(e)=>{
+            setdropoff(e.target.value)
+          }}
           className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
-          placeholder=""
+          placeholder="Enter the DropOff Location"
           required
         />
 
@@ -262,17 +287,52 @@ const handleappname2= ()=>{
 
       <button
         type="submit"
-        className="w-52 h-12 bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 rounded-full shadow-xs text-white text-base font-semibold leading-6 mb-6"
+        onSubmit={()=>{submithandeler(e)}}
+        className="w-52 h-14 font-light border-2 border-green-400 hover:opacity-65 rounded-xl bg-gradient-to-r from-rose-500 to-fuchsia-400 transition-all duration-700 p-4 shadow-xs text-white  text-xl leading-6 mb-6"
       >
-        Sign in
+        Submit
       </button>
     </form>
+
+
+{/* Suggestions tab */}
+<div ref={panelref} className='bg-black text-white h-0 overflow-hidden  transition-height duration-300'>
+
+  <ul className="max-w-lg flex flex-col text-center">
+    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
+    123 Maple Avenue, Springfield, IL 62701
+    </li>
+    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
+    456 Elm Street, Rivertown, CA 90210
+    </li>
+    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
+    789 Oak Lane, Pinecrest, TX 75001
+    </li>
+    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
+    101 Birch Boulevard, Willow City, FL 33101
+    </li>
+    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
+    202 Cherry Street, Meadowbrook, NY 10001
+    </li>
+    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
+    303 Cedar Court, Lakewood, WA 98001
+    </li>
+    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
+    404 Ash Drive
+    Brookfield, PA 19101
+    </li>
+    
+  </ul>
+
+</div>
+
+
 
     </div>
 
         {/* Additional Content to Enable Scrolling */}
         <div onMouseEnter={handleappname}  className=" appname text-lg mt-16  p-6 flex flex-col gap-5  text-white bg-black w-full border-t-4 border-b-2 border-black" >
-          <p className='font-normal hp text-center text-5xl  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>
+          <p className='font-normal hp opacity-0 text-center text-5xl  bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent'>
             Primeride Taxi App
           </p>
           <br />
