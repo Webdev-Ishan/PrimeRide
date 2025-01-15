@@ -9,6 +9,9 @@ import {useTypewriter,Cursor} from 'react-simple-typewriter'
 import taxi from '../assets/taxi.png'
 import { gsap } from 'gsap';
 import {useGSAP} from '@gsap/react'
+import Locationpanel from '../components/LocationPanel'
+import RidePanel from '../components/Ridepanel';
+
 
 
 const Home = () => {
@@ -132,6 +135,8 @@ if(panelopen){
   
   gsap.to(panelref.current,{
     height:'70%',
+    duration:6,
+    delay:0.5,
 
    })
 }
@@ -298,35 +303,17 @@ if(panelopen){
 {/* Suggestions tab */}
 <div ref={panelref} className='bg-black text-white h-0 overflow-hidden  transition-height duration-300'>
 
-  <ul className="max-w-lg flex flex-col text-center">
-    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
-    123 Maple Avenue, Springfield, IL 62701
-    </li>
-    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
-    456 Elm Street, Rivertown, CA 90210
-    </li>
-    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
-    789 Oak Lane, Pinecrest, TX 75001
-    </li>
-    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
-    101 Birch Boulevard, Willow City, FL 33101
-    </li>
-    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
-    202 Cherry Street, Meadowbrook, NY 10001
-    </li>
-    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
-    303 Cedar Court, Lakewood, WA 98001
-    </li>
-    <li className="inline-flex items-center hover:bg-pink-50 gap-x-2 py-3 px-4 text-sm font-medium bg-white border-2 rounded-md border-black text-black ">
-    404 Ash Drive
-    Brookfield, PA 19101
-    </li>
-    
-  </ul>
+ <Locationpanel/>
 
 </div>
 
 
+{/* Ride Details tab */}
+<div className='bg-black text-white h-auto overflow-hidden transition-height duration-300'>
+
+ <RidePanel/>
+
+</div>
 
     </div>
 
