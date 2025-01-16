@@ -20,14 +20,10 @@ const Home = () => {
   const [dropoff, setdropoff] = useState('');
   const [panelopen, setpanelopen]= useState(false);
   const panelref =useRef(null);
-  const [selectedLocation, setSelectedLocation] = useState(null);
-  const [showLocationPanel, setShowLocationPanel] = useState(true);
-  const [selectedRide, setSelectedRide] = useState(null);
-  const [showForm, setShowForm] = useState(true);
-  const [showConfirmRidePanel, setShowConfirmRidePanel] = useState(false);
-  const [showFindingRider, setShowFindingRider] = useState(false);
-
-
+  const [vehcilePanel, setvehcilePanel]=useState(false)
+  const vehcilePanelRef= useRef(null);
+  const [selectedLocation, setSelectedLocation] = useState('')
+  const [currentField, setCurrentField] = useState("")
 
   const navparaMessages = [
     "Ensure a safe and secure ride with our trusted drivers and advanced tracking system.",
@@ -45,7 +41,14 @@ const Home = () => {
   });
 
   
-
+  const handleLocationSelect = (selectedLocation) => {
+    if (currentField === "pickup") {
+      setpickup(selectedLocation);
+    } else if (currentField === "dropoff") {
+      setdropoff(selectedLocation);
+    }
+    setpanelopen(false); // Close the panel after selection
+  };
 
 
 
@@ -99,9 +102,9 @@ const handleappname2= ()=>{
     x:1000,
     duration:0.5,
     delay:0.5,
-    rotate:360,
   })
 }
+
 
   const rides = [
     {
@@ -127,21 +130,24 @@ const handleappname2= ()=>{
 
 
   const submithandeler= (e)=>{
-    e.preventDefault()
+    e.preventDefault();
+    setvehcilePanel(true)
   }
 
-  useGSAP(function(){
-if(panelopen){
+  useGSAP(() => {
+
   
-  gsap.to(panelref.current,{
-    height:'70%',
-    duration:6,
-    delay:0.5,
+    if (panelopen) {
+      gsap.from(panelref.current,{
+        opacity:1,
+        duration: 6,
+        delay: 0.5,
+      });
+    }
+  }, [panelopen]);
+  
 
-   })
-}
 
-  },[panelopen])
 
   return (
     <div className="w-full h-screen overflow-y-auto overflow-x-hidden">
@@ -221,7 +227,7 @@ if(panelopen){
 
 
          <h1 className='text-6xl text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent font-mono'>Find A Ride</h1>
-        <form>
+        <form onSubmit={submithandeler}>
       <div className="relative mb-6">
         <label className="flex items-center mb-2 text-white text-sm font-medium">
           PickUp Location
@@ -243,8 +249,9 @@ if(panelopen){
           type="text"
           id="pickup"
           value={pickup}
-          onClick={()=>{
-            setpanelopen(!panelopen)
+          onClick={() => {
+            setpanelopen(!panelopen);
+            setCurrentField("pickup");
           }}
           onChange={(e)=>{
             setpickup(e.target.value)
@@ -275,8 +282,9 @@ if(panelopen){
         <input
           type="text"
           id="dropoff"
-          onClick={()=>{
-            setpanelopen(!panelopen)
+          onClick={() => {
+            setpanelopen(!panelopen);
+            setCurrentField("dropoff");
           }}
           value={dropoff}
           onChange={(e)=>{
@@ -292,7 +300,7 @@ if(panelopen){
 
       <button
         type="submit"
-        onSubmit={()=>{submithandeler(e)}}
+        
         className="w-52 h-14 font-light border-2 border-green-400 hover:opacity-65 rounded-xl bg-gradient-to-r from-rose-500 to-fuchsia-400 transition-all duration-700 p-4 shadow-xs text-white  text-xl leading-6 mb-6"
       >
         Submit
@@ -301,17 +309,20 @@ if(panelopen){
 
 
 {/* Suggestions tab */}
-<div ref={panelref} className='bg-black text-white h-0 overflow-hidden  transition-height duration-300'>
+<div ref={panelref} className={`bg-black text-white opacity-0 overflow-hidden  transition-height duration-300
+  
+  ${panelopen ? 'h-{70%}' : 'h-0'}
+  `}>
 
- <Locationpanel/>
+ <Locationpanel    setLocation={handleLocationSelect} />
 
 </div>
 
 
 {/* Ride Details tab */}
-<div className='bg-black text-white h-auto overflow-hidden transition-height duration-300'>
+<div ref={vehcilePanelRef} className={`bg-black text-white  ${vehcilePanel ? 'h-{70%}' : 'h-0'} overflow-hidden transition-height duration-300`}>
 
- <RidePanel/>
+ <RidePanel setvehcilepanel={setvehcilePanel} setpanel={setpanelopen} />
 
 </div>
 

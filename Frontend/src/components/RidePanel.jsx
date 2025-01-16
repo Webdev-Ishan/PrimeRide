@@ -1,9 +1,10 @@
 // Install Tailwind CSS and React if not already done.
 // Tailwind CSS can be installed and configured using the Tailwind documentation.
 
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
+import gsap from 'gsap';
 
-const RidePanel = () => {
+const RidePanel = ({setvehcilepanel,setpanel}) => {
   const [activeTab, setActiveTab] = useState("Car");
 
   const rides = {
@@ -21,10 +22,18 @@ const RidePanel = () => {
     ],
   };
 
+const vehcilePanelRef = useRef(null);
+const handleBackClick = () => {
+  setvehcilepanel(false);
+  setpanel(true)
+};
   return (
-    <div className="min-h-screen  bg-black text-white flex justify-center items-center">
+    <div ref={vehcilePanelRef} className="min-h-screen  bg-black text-white flex justify-center items-center">
       <div className="w-full max-w-2xl p-4 bg-slate-900 border-2 border-white rounded-lg shadow-lg">
-        <h1 style={{ WebkitTextStroke: "2px black" }}  className="text-4xl font-bold text-center bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent mb-4">Choose Your Ride</h1>
+      <img
+      onClick={ handleBackClick}
+      className="w-16 h-6 rounded-xl border-2 hover:border-green-400 " src="https://media.istockphoto.com/id/2185704131/photo/arrow-line-arrow-vector-flat-style-symbol-arrow-on-a-white-background-vector-illustration.jpg?s=2048x2048&w=is&k=20&c=taGR268zRzIsdZ14liYuMgPuB-PtM3h5qe_qtT8TvZo=" alt="" />
+        <h1 style={{ WebkitTextStroke: "2px black" }}  className="text-4xl font-bold text-center m-4 bg-gradient-to-r from-rose-500 to-fuchsia-400 bg-clip-text text-transparent mb-4">Choose Your Ride</h1>
         {/* Tabs */}
         <div className="flex justify-around mb-4">
           {["Car", "Bike", "Auto"].map((tab) => (
@@ -52,7 +61,7 @@ const RidePanel = () => {
                 <p className="font-bold">{ride.name}</p>
                 <p className="text-gray-400">ETA: {ride.eta}</p>
               </div>
-              <img className="w-20 h-14 rounded-2xl" src={ride.img}  alt="" />
+              <img className="w-20 h-14 rounded-2xl border-2 border-pink-500" src={ride.img}  alt="" />
               <p className="font-bold">{ride.price}</p>
             </div>
           ))}
