@@ -106,27 +106,6 @@ const handleappname2= ()=>{
 }
 
 
-  const rides = [
-    {
-      type: 'Car',
-      details: 'Comfortable and spacious car for your ride.',
-      expense: '$20',
-      image: 'https://img.freepik.com/free-vector/white-convertible-car-isolated-white-vector_53876-66815.jpg?t=st=1736313729~exp=1736317329~hmac=2c50f04da52a07e4cc8e072eef770e633ee8413aed3201f83f44dc21cc76d947&w=900'
-    },
-    {
-      type: 'Bike',
-      details: 'Fast and convenient bike for your ride.',
-      expense: '$10',
-      image: 'https://img.freepik.com/free-vector/red-scooter_1308-82607.jpg?t=st=1736315478~exp=1736319078~hmac=4a650d81e03ed5f0290363e35ab4c2e5bfb3e88d0e4f1e64b1b8afbaa6388e8c&w=740'
-    },
-    {
-      type: 'Auto',
-      details: 'Affordable and reliable auto for your ride.',
-      expense: '$15',
-      image: 'https://img.freepik.com/premium-vector/realistic-rikshaw-vector-illustration-concept_1253202-34901.jpg?w=740'
-    }
-  ];
-
 
 
   const submithandeler= (e)=>{
@@ -134,18 +113,6 @@ const handleappname2= ()=>{
     setvehcilePanel(true)
   }
 
-  useGSAP(() => {
-
-  
-    if (panelopen) {
-      gsap.from(panelref.current,{
-        opacity:1,
-        duration: 6,
-        delay: 0.5,
-      });
-    }
-  }, [panelopen]);
-  
 
 
 

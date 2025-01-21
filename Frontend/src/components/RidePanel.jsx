@@ -2,7 +2,6 @@
 // Tailwind CSS can be installed and configured using the Tailwind documentation.
 
 import React, { useState,useRef } from "react";
-import gsap from 'gsap';
 
 const RidePanel = ({setvehcilepanel,setpanel}) => {
   const [activeTab, setActiveTab] = useState("Car");
@@ -23,6 +22,7 @@ const RidePanel = ({setvehcilepanel,setpanel}) => {
   };
 
 const vehcilePanelRef = useRef(null);
+
 const handleBackClick = () => {
   setvehcilepanel(false);
   setpanel(true)
